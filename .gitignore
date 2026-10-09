@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Flutter / Dart (para cuando se agregue la app)
+**/.dart_tool/
+**/.packages
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/pubspec.lock
+**/*.g.dart
+**/*.freezed.dart
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/*.xcworkspace/xcuserdata/
+**/*.xcodeproj/xcuserdata/
+
+# Android
+**/android/.gradle/
+**/android/local.properties
+**/android/key.properties
+**/*.jks
