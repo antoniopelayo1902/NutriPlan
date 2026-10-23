@@ -5,9 +5,13 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>es-MX</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>es</string>
+	</array>
 	<key>CFBundleDisplayName</key>
-	<string>Nutriplan</string>
+	<string>NutriPlan</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
