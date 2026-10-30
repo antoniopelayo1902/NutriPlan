@@ -99,7 +99,7 @@ void main() {
     }
   });
 
-  test('pubspec has no runtime dependency beyond the Flutter SDK packages and cupertino_icons', () {
+  test('pubspec runtime dependencies are the Flutter SDK packages, cupertino_icons and Firebase Auth', () {
     final String y = File('pubspec.yaml').readAsStringSync();
     final String deps = y
         .split('dependencies:')[1]
@@ -112,6 +112,9 @@ void main() {
       'flutter',
       'flutter_localizations',
       'cupertino_icons',
+      'firebase_core',
+      'firebase_auth',
+      'google_sign_in',
     ]);
   });
 

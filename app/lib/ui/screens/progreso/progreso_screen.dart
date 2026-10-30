@@ -23,7 +23,9 @@ import '../../components/primitives/app_card.dart';
 import '../../components/primitives/app_grid.dart';
 import '../../components/primitives/app_stack.dart';
 import '../../components/primitives/app_text.dart';
+import '../../components/actions/app_button.dart';
 import '../async_gate.dart';
+import '../login/auth_gate.dart';
 import '../screen_frame.dart';
 
 enum _View { week, month }
@@ -81,6 +83,31 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
           ]),
           builder: (BuildContext context, Widget? _) =>
               _view == _View.week ? _week(t) : _month(t),
+        ),
+        ?_signOut(context, t),
+      ],
+    );
+  }
+
+  /// Only when the app runs behind the Firebase login.
+  Widget? _signOut(BuildContext context, AppTokens t) {
+    final AuthScope? auth = AuthScope.maybeOf(context);
+    if (auth == null) return null;
+    return AppStack(
+      gap: t.space.s2,
+      children: <Widget>[
+        AppText(
+          S.signedInAs(auth.email),
+          variant: TextVariant.caption,
+          tone: TextTone.muted,
+          textAlign: TextAlign.center,
+        ),
+        AppButton(
+          key: const Key('signOutButton'),
+          label: S.signOut,
+          variant: ButtonVariant.outlineNeutral,
+          fullWidth: true,
+          onPressed: auth.signOut,
         ),
       ],
     );

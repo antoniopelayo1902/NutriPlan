@@ -257,4 +257,34 @@ abstract final class S {
       'cintura $waist. Cada medida cuenta como avance.';
   static const String monthSummaryFlat =
       'Tus medidas se mantienen estables. Seguimos con el plan.';
+
+  // Login (Firebase Authentication)
+  static const String loginEyebrow = 'Bienvenida a';
+  static const String loginSubtitle =
+      'Tu plan de alimentación por equivalentes, siempre a la mano.';
+  static const String loginCardTitle = 'Inicia sesión';
+  static const String loginEmail = 'Correo';
+  static const String loginPassword = 'Contraseña';
+  static const String loginSubmit = 'Entrar';
+  static const String loginGoogle = 'Entrar con Google';
+  static const String loginRegister = 'Crear cuenta';
+  static const String loginForgot = 'Olvidé mi contraseña';
+  static const String loginMissingFields = 'Escribe tu correo y tu contraseña.';
+  static const String loginMissingEmail =
+      'Escribe tu correo para enviarte el enlace.';
+  static String loginResetSent(String email) =>
+      'Te enviamos un correo a $email para cambiar tu contraseña.';
+  static const String signOut = 'Cerrar sesión';
+  static String signedInAs(String email) => 'Sesión iniciada como $email';
+  static const String authInvalidEmail = 'El correo no es válido.';
+  static const String authUserDisabled = 'Esta cuenta está deshabilitada.';
+  static const String authWrongCredentials = 'Correo o contraseña incorrectos.';
+  static const String authEmailInUse = 'Ya existe una cuenta con ese correo.';
+  static const String authWeakPassword =
+      'La contraseña debe tener al menos 6 caracteres.';
+  static const String authNoNetwork = 'No hay conexión a internet.';
+  static const String authTooManyRequests =
+      'Demasiados intentos. Espera un momento.';
+  static const String authGoogleFailed = 'No se pudo entrar con Google.';
+  static const String authUnknown = 'Ocurrió un error. Intenta de nuevo.';
 }
