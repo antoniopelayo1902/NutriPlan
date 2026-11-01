@@ -137,10 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: AppStack(
               gap: t.space.s5,
               children: <Widget>[
-                const ScreenHeader(
-                  eyebrow: S.loginEyebrow,
-                  title: S.appName,
-                ),
+                const ScreenHeader(eyebrow: S.loginEyebrow, title: S.appName),
                 const AppText(S.loginSubtitle, tone: TextTone.secondary),
                 AppCard(
                   child: AppStack(

@@ -24,8 +24,8 @@ abstract final class AuthService {
   /// Returns false when the user closes the picker without choosing.
   static Future<bool> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount account =
-          await GoogleSignIn.instance.authenticate();
+      final GoogleSignInAccount account = await GoogleSignIn.instance
+          .authenticate();
       final OAuthCredential credential = GoogleAuthProvider.credential(
         idToken: account.authentication.idToken,
       );

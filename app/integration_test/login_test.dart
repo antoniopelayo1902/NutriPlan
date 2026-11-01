@@ -7,7 +7,11 @@ import 'package:nutriplan/main.dart' as app;
 
 /// Runs the real app on a device against the Firebase project: create an
 /// account, sign out, reject a wrong password and sign back in.
-Future<void> waitFor(WidgetTester tester, Finder finder, {int seconds = 20}) async {
+Future<void> waitFor(
+  WidgetTester tester,
+  Finder finder, {
+  int seconds = 20,
+}) async {
   for (int i = 0; i < seconds * 4; i++) {
     await tester.pump(const Duration(milliseconds: 250));
     if (finder.evaluate().isNotEmpty) return;
@@ -44,13 +48,16 @@ Future<void> tapKey(WidgetTester tester, String key) async {
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('create account, sign out, wrong password, sign in', (tester) async {
+  testWidgets('create account, sign out, wrong password, sign in', (
+    tester,
+  ) async {
     await app.main();
     // Start from the login screen even if a previous run left a session.
     await FirebaseAuth.instance.signOut();
     await waitFor(tester, find.byKey(const Key('emailField')));
 
-    final String email = 'prueba${DateTime.now().millisecondsSinceEpoch}@nutriplan.test';
+    final String email =
+        'prueba${DateTime.now().millisecondsSinceEpoch}@nutriplan.test';
     const String password = 'Prueba123';
 
     // 1. Create account -> the app shell appears.
