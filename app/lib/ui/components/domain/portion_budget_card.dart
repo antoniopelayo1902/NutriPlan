@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../../core/format/es_mx_format.dart';
 import '../../../core/i18n/strings_es_mx.dart';
 import '../../../domain/services/portion_budget.dart';
+import '../../../theme/food_color.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../data_display/eyebrow.dart';
@@ -35,6 +36,7 @@ class PortionBudgetCard extends StatelessWidget {
             ProgressBar(
               value: r.consumed,
               max: r.target,
+              food: foodColor(t.colors, r.group),
               label: groupBudgetLabel(r.group),
               valueLabel: S.budgetRow(
                 formatPortion(r.consumed),

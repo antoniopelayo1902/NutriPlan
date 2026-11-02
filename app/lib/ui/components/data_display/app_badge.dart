@@ -4,7 +4,16 @@ import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../primitives/app_text.dart';
 
-enum BadgeTone { success, warning, danger, info, accent, neutral }
+enum BadgeTone {
+  success,
+  warning,
+  danger,
+  info,
+  accent,
+  message,
+  highlight,
+  neutral,
+}
 
 class AppBadge extends StatelessWidget {
   const AppBadge(this.label, {super.key, this.tone = BadgeTone.neutral});
@@ -30,10 +39,16 @@ class AppBadge extends StatelessWidget {
         text = TextTone.danger;
       case BadgeTone.info:
         fill = c.infoBg;
-        text = TextTone.success;
+        text = TextTone.info;
       case BadgeTone.accent:
         fill = c.accentSoft;
         text = TextTone.accent;
+      case BadgeTone.message:
+        fill = c.messageSoft;
+        text = TextTone.message;
+      case BadgeTone.highlight:
+        fill = c.bgSurface;
+        text = TextTone.highlight;
       case BadgeTone.neutral:
         fill = c.bgTrack;
         text = TextTone.secondary;

@@ -28,12 +28,12 @@ void main() {
     }
   });
 
-  test('raw colors only live in theme/primitives.dart', () {
+  test('raw colors only live in theme/primitives*.dart', () {
     final RegExp bad = RegExp(
       r'Color\(0x|(?<![A-Za-z])Colors\.|#[0-9A-Fa-f]{6}\b',
     );
     for (final File f in all.where(
-      (File f) => !f.path.endsWith('theme/primitives.dart'),
+      (File f) => !RegExp(r'theme/primitives(_\w+)?\.dart$').hasMatch(f.path),
     )) {
       expect(
         bad.hasMatch(strip(f.readAsStringSync())),

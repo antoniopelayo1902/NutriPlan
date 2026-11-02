@@ -6,5 +6,5 @@ import 'primitives.dart';
 
 /// Holds the runtime accent. Setting [value] re-themes the whole app.
 class AccentController extends ValueNotifier<Color> {
-  AccentController([super.value = Prim.terracotta500]);
+  AccentController([super.value = Hue.accent500]);
 }

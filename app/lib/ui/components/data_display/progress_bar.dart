@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../theme/food_palette.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../primitives/app_stack.dart';
@@ -17,6 +18,7 @@ class ProgressBar extends StatelessWidget {
     this.tone = BarTone.accent,
     this.label,
     this.valueLabel,
+    this.food,
   });
 
   final double value;
@@ -25,11 +27,15 @@ class ProgressBar extends StatelessWidget {
   final String? label;
   final String? valueLabel;
 
+  /// Food-group colors: group solid on the group soft track.
+  final FoodTone? food;
+
   bool get over => value > max;
 
   BarTone get effectiveTone => over ? BarTone.warning : tone;
 
   Color _fill(SemanticColors c) {
+    if (food != null && !over) return food!.solid;
     switch (effectiveTone) {
       case BarTone.accent:
         return c.accent;
@@ -49,7 +55,7 @@ class ProgressBar extends StatelessWidget {
     final bool reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final Widget track = DecoratedBox(
       decoration: BoxDecoration(
-        color: t.colors.bgTrack,
+        color: food?.soft ?? t.colors.bgTrack,
         borderRadius: BorderRadius.circular(t.radius.pill),
       ),
       child: SizedBox(

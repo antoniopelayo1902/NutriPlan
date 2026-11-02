@@ -30,6 +30,7 @@ class AlternativeCard extends StatelessWidget {
     return AppCard(
       elevation: CardElevation.item,
       radius: t.radius.lg,
+      backdrop: _FitBar(fit),
       onTap: onTap,
       semanticLabel: '$dish, ${FitBadge.labelOf(fit)}',
       child: AppStack(
@@ -46,6 +47,40 @@ class AlternativeCard extends StatelessWidget {
             ],
           ),
           PortionTags(portions),
+        ],
+      ),
+    );
+  }
+}
+
+/// Decorative left bar in the fit color (cabe / ajusta / no cabe).
+class _FitBar extends StatelessWidget {
+  const _FitBar(this.fit);
+
+  final Fit fit;
+
+  Color _color(SemanticColors c) {
+    switch (fit) {
+      case Fit.yes:
+        return c.fitYes;
+      case Fit.adjust:
+        return c.fitAdjust;
+      case Fit.no:
+        return c.fitNo;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppTokens t = context.tokens;
+    return ExcludeSemantics(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            width: t.size.fitBar,
+            child: ColoredBox(color: _color(t.colors)),
+          ),
         ],
       ),
     );

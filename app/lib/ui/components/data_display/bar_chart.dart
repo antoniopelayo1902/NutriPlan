@@ -5,7 +5,22 @@ import '../../../theme/tokens_context.dart';
 import '../primitives/app_stack.dart';
 import '../primitives/app_text.dart';
 
-enum BarState { current, past, empty }
+/// [complete] and [partial] are adherence days; [current] is today; [past]
+/// is a neutral earlier value; [empty] has no data.
+enum BarState {
+  current,
+  complete,
+  partial,
+  past,
+  empty;
+
+  /// State of a day with [pct] percent of its meals done.
+  static BarState day(int pct, bool isToday) {
+    if (pct == 0) return empty;
+    if (isToday) return current;
+    return pct >= 100 ? complete : partial;
+  }
+}
 
 class BarDatum {
   const BarDatum({
@@ -51,6 +66,10 @@ class BarChart extends StatelessWidget {
     switch (d.state) {
       case BarState.current:
         return c.accent;
+      case BarState.complete:
+        return c.dayComplete;
+      case BarState.partial:
+        return c.dayPartial;
       case BarState.past:
         return c.accentMuted;
       case BarState.empty:

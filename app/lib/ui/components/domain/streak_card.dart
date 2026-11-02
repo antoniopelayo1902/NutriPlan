@@ -5,7 +5,6 @@ import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../data_display/app_badge.dart';
 import '../data_display/eyebrow.dart';
-import '../data_display/metric.dart';
 import '../primitives/app_card.dart';
 import '../primitives/app_stack.dart';
 import '../primitives/app_text.dart';
@@ -20,18 +19,33 @@ class StreakCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppTokens t = context.tokens;
     return AppCard(
-      tone: CardTone.accentSoft,
+      tone: CardTone.highlightSoft,
       elevation: CardElevation.none,
       padding: t.space.s5,
       child: AppStack(
         gap: t.space.s3,
         children: <Widget>[
-          const Eyebrow(S.streakEyebrow, tone: TextTone.accent),
-          Metric(
-            value: '$days',
-            unit: S.streakUnit(days),
-            size: MetricSize.md,
-            caption: S.streakCaption,
+          const Eyebrow(S.streakEyebrow, tone: TextTone.highlight),
+          AppStack(
+            direction: Axis.horizontal,
+            gap: t.space.s3,
+            children: <Widget>[
+              _disc(t),
+              Flexible(
+                child: AppStack(
+                  gap: t.space.s1,
+                  align: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AppText(S.streakUnit(days), tone: TextTone.secondary),
+                    const AppText(
+                      S.streakCaption,
+                      variant: TextVariant.caption,
+                      tone: TextTone.secondary,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           if (badges.isNotEmpty)
             AppStack(
@@ -40,11 +54,23 @@ class StreakCard extends StatelessWidget {
               gap: t.space.s2,
               children: <Widget>[
                 for (final String b in badges)
-                  AppBadge(b, tone: BadgeTone.accent),
+                  AppBadge(b, tone: BadgeTone.highlight),
               ],
             ),
         ],
       ),
     );
   }
+
+  Widget _disc(AppTokens t) => SizedBox(
+    width: t.size.streakDisc,
+    height: t.size.streakDisc,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: t.colors.highlight,
+        shape: BoxShape.circle,
+      ),
+      child: Center(child: AppText('$days', variant: TextVariant.metricMd)),
+    ),
+  );
 }

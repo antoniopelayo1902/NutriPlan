@@ -70,13 +70,10 @@ void main() {
     const surface = Prim.sand0;
     test('default terracotta text accent has contrast >= 4.5', () {
       expect(
-        contrastRatio(deriveTextAccent(Prim.terracotta500, surface), surface),
+        contrastRatio(deriveTextAccent(Hue.accent500, surface), surface),
         greaterThanOrEqualTo(4.5),
       );
-      expect(
-        contrastRatio(Prim.terracotta700, surface),
-        greaterThanOrEqualTo(4.5),
-      );
+      expect(contrastRatio(Prim.accentInk, surface), greaterThanOrEqualTo(4.5));
     });
     for (final entry in <String, Color>{
       'light yellow': const Color(0xFFFFEB3B),
@@ -106,9 +103,9 @@ void main() {
       expect(t.radius.bar.topLeft.x, 10);
       expect(t.radius.bar.bottomLeft.x, 5);
       expect(t.size.hitMin, 48);
-      expect(t.colors.accent, Prim.terracotta500);
+      expect(t.colors.accent, Hue.accent500);
       expect(t.colors.textMuted, Prim.sand800);
-      expect(t.colors.fitNoFg, Prim.brick700);
+      expect(t.colors.fitNoFg, Prim.fitNoFg);
       expect(t.typo.displayXl.fontSize, 52);
       expect(t.typo.displayXl.letterSpacing, closeTo(-2.08, 1e-9));
       expect(t.typo.displayXl.fontFamily, 'Newsreader');
@@ -120,7 +117,7 @@ void main() {
       final other = t.accentTo(const Color(0xFF009688));
       expect(other.colors.accent, const Color(0xFF009688));
       expect(t.lerp(other, 1).colors.accent, const Color(0xFF009688));
-      expect(t.lerp(other, 0).colors.accent, Prim.terracotta500);
+      expect(t.lerp(other, 0).colors.accent, Hue.accent500);
       expect(t.copyWith(space: t.space).colors, t.colors);
     });
   });
