@@ -28,6 +28,9 @@ enum TextTone {
   faint,
   accent,
   inverse,
+  info,
+  highlight,
+  message,
   success,
   warning,
   danger,
@@ -81,6 +84,12 @@ Color textColorFor(AppTokens t, TextTone tone) {
       return c.textAccent;
     case TextTone.inverse:
       return c.textInverse;
+    case TextTone.info:
+      return c.infoFg;
+    case TextTone.highlight:
+      return c.highlightInk;
+    case TextTone.message:
+      return c.messageInk;
     case TextTone.success:
       return c.successFg;
     case TextTone.warning:
@@ -97,6 +106,7 @@ class AppText extends StatelessWidget {
     super.key,
     this.variant = TextVariant.bodyMd,
     this.tone = TextTone.primary,
+    this.color,
     this.maxLines,
     this.textAlign,
     this.overflow,
@@ -105,6 +115,9 @@ class AppText extends StatelessWidget {
   final String text;
   final TextVariant variant;
   final TextTone tone;
+
+  /// Overrides [tone] (for example a food-group ink color).
+  final Color? color;
   final int? maxLines;
   final TextAlign? textAlign;
   final TextOverflow? overflow;
@@ -117,7 +130,10 @@ class AppText extends StatelessWidget {
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: overflow,
-      style: textStyleFor(t, variant).copyWith(color: textColorFor(t, tone)),
+      style: textStyleFor(
+        t,
+        variant,
+      ).copyWith(color: color ?? textColorFor(t, tone)),
     );
   }
 }

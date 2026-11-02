@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import '../../../core/i18n/strings_es_mx.dart';
 import '../../../domain/models/portions.dart';
+import '../../../domain/models/food_group.dart';
+import '../../../theme/food_color.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../actions/app_button.dart';
@@ -11,6 +13,7 @@ import '../data_display/eyebrow.dart';
 import '../primitives/app_card.dart';
 import '../primitives/app_stack.dart';
 import '../primitives/app_text.dart';
+import 'portion_strip.dart';
 import 'portion_tags.dart';
 
 class MealCard extends StatelessWidget {
@@ -43,6 +46,12 @@ class MealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppTokens t = context.tokens;
     return AppCard(
+      topStrip: PortionStrip(
+        segments: <PortionStripSegment>[
+          for (final MapEntry<FoodGroup, double> e in portions.entries)
+            PortionStripSegment(foodColor(t.colors, e.key).solid, e.value),
+        ],
+      ),
       child: AppStack(
         gap: t.space.s3,
         children: <Widget>[
@@ -54,7 +63,7 @@ class MealCard extends StatelessWidget {
               AppText(time, variant: TextVariant.caption, tone: TextTone.muted),
               const Spacer(),
               if (swapped)
-                const AppBadge(S.badgeSwapped, tone: BadgeTone.accent),
+                const AppBadge(S.badgeSwapped, tone: BadgeTone.message),
             ],
           ),
           AppText(

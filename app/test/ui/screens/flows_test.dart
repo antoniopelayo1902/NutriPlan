@@ -53,7 +53,7 @@ void main() {
     expect(find.byType(MealCard), findsNWidgets(4));
     expect(find.text('Desayuno'), findsOneWidget);
     expect(
-      find.text(
+      find.bySemanticsLabel(
         '1 Verdura · 2 Cereales · 1 Fruta · 1 Origen animal · 1 Leche · 1 Grasa',
       ),
       findsOneWidget,

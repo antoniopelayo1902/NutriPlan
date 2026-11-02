@@ -11,7 +11,7 @@ AppTokens tokensOf(BuildContext context) {
 }
 
 /// Builds the light theme for the given runtime [accent].
-ThemeData buildTheme({Color accent = Prim.terracotta500}) {
+ThemeData buildTheme({Color accent = Hue.accent500}) {
   final AppTokens tokens = AppTokens.withAccent(accent);
   final SemanticColors c = tokens.colors;
   return ThemeData(

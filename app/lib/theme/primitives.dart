@@ -1,42 +1,53 @@
 import 'dart:ui';
 
-/// Raw palette. This is the ONLY file in lib/ allowed to contain color
-/// literals. Components never import this file; they use semantic tokens.
+export 'primitives_food.dart';
+export 'primitives_scales.dart';
+
+/// Raw palette. Together with its primitives_*.dart siblings this is the ONLY
+/// code in lib/ allowed to contain color literals. Components never import it;
+/// they use semantic tokens.
 abstract final class Prim {
   static const Color sand0 = Color(0xFFFFFFFF);
   static const Color sand25 = Color(0xFFFFFCF8);
-  static const Color sand50 = Color(0xFFFDFAF6);
-  static const Color sand100 = Color(0xFFFAF6F1);
-  static const Color sand150 = Color(0xFFF6EFE6);
   static const Color sand200 = Color(0xFFF2EAE1);
-  static const Color sand300 = Color(0xFFE9DFD4);
+  static const Color sand350 = Color(0xFFEDE3D8);
   static const Color sand400 = Color(0xFFE4D8CB);
+  static const Color sand450 = Color(0xFFE5DBD0);
   static const Color sand500 = Color(0xFFDED2C6);
   static const Color sand600 = Color(0xFFB9A899);
-  static const Color sand700 = Color(0xFF8A7A6C);
   static const Color sand800 = Color(0xFF6E5F53);
   static const Color sand850 = Color(0xFF574D46);
   static const Color sand900 = Color(0xFF2A2320);
 
-  static const Color terracotta100 = Color(0xFFFBEFE7);
-  static const Color terracotta200 = Color(0xFFEFD3C2);
-  static const Color terracotta300 = Color(0xFFE7D3C2);
-  static const Color terracotta500 = Color(0xFFD9613B);
-  static const Color terracotta700 = Color(0xFFA8451F);
+  /// App canvas (tokens.json bg-app).
+  static const Color canvas = Color(0xFFF7F1E8);
 
-  static const Color olive100 = Color(0xFFEEF0E4);
-  static const Color olive150 = Color(0xFFEDF0E5);
-  static const Color olive500 = Color(0xFF5E7048);
-  static const Color olive700 = Color(0xFF55693F);
-  static const Color olive800 = Color(0xFF414A2F);
-  static const Color olive900 = Color(0xFF3D4A2C);
+  /// Text on the primary (deep green) fill.
+  static const Color inkOnDeep = Color(0xFFF3EEE4);
 
-  static const Color amber100 = Color(0xFFF7EEDC);
-  static const Color amber500 = Color(0xFFC9902A);
-  static const Color amber700 = Color(0xFF8A6415);
+  /// Small text on the default accent (AA on white).
+  static const Color accentInk = Color(0xFFA8451F);
+  static const Color accentSoft = Color(0xFFFBE6DA);
+  static const Color accentMuted = Color(0xFFEFD3C2);
 
-  static const Color brick100 = Color(0xFFF7E7E0);
-  static const Color brick700 = Color(0xFF9B3B21);
+  static const Color secondarySoft = Color(0xFFE2EFE6);
+  static const Color highlightSoft = Color(0xFFFBEFD3);
+  static const Color messageSoft = Color(0xFFF3E3EC);
+
+  static const Color fitYesBg = Color(0xFFE3F1E7);
+  static const Color fitYesFg = Color(0xFF22603D);
+  static const Color fitAdjustBg = Color(0xFFFBEFD3);
+  static const Color fitAdjustFg = Color(0xFF7E560B);
+  static const Color fitNoBg = Color(0xFFF9E2DA);
+  static const Color fitNoFg = Color(0xFF8E2E15);
+
+  static const Color foodVerduraSoft = Color(0xFFE2F0E3);
+  static const Color foodFrutaSoft = Color(0xFFFBE4DF);
+  static const Color foodCerealSoft = Color(0xFFF8ECD3);
+  static const Color foodAoaSoft = Color(0xFFF6E3DC);
+  static const Color foodLeguminosaSoft = Color(0xFFF0E4DA);
+  static const Color foodLecheSoft = Color(0xFFE3EDF6);
+  static const Color foodGrasaSoft = Color(0xFFF5F0D2);
 
   /// Fully transparent.
   static const Color transparent = Color(0x00000000);

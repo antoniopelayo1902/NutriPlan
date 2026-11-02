@@ -5,7 +5,7 @@ import '../../../theme/tokens_context.dart';
 import '../primitives/app_card.dart';
 import '../primitives/app_text.dart';
 
-enum CalloutTone { info, accentSoft, success, neutralDashed }
+enum CalloutTone { info, accentSoft, message, success, neutralDashed }
 
 class Callout extends StatelessWidget {
   const Callout(this.text, {super.key, this.tone = CalloutTone.info});
@@ -19,6 +19,8 @@ class Callout extends StatelessWidget {
         return CardTone.info;
       case CalloutTone.accentSoft:
         return CardTone.accentSoft;
+      case CalloutTone.message:
+        return CardTone.message;
       case CalloutTone.success:
         return CardTone.success;
       case CalloutTone.neutralDashed:
@@ -29,8 +31,11 @@ class Callout extends StatelessWidget {
   TextTone get _textTone {
     switch (tone) {
       case CalloutTone.info:
+        return TextTone.info;
       case CalloutTone.success:
         return TextTone.success;
+      case CalloutTone.message:
+        return TextTone.message;
       case CalloutTone.accentSoft:
         return TextTone.accent;
       case CalloutTone.neutralDashed:

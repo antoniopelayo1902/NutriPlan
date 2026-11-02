@@ -113,9 +113,7 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
                     label: S.weekdayInitials[d.date.weekday - 1],
                     value: dayAdherencePct(d).toDouble(),
                     valueLabel: '${dayAdherencePct(d)}%',
-                    state: dayAdherencePct(d) == 0
-                        ? BarState.empty
-                        : (d.date == today ? BarState.current : BarState.past),
+                    state: BarState.day(dayAdherencePct(d), d.date == today),
                   ),
               ],
             ),
@@ -196,7 +194,7 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
             ),
             BodyCompositionCard(measurement: all.last, nutritionistName: nutri),
             MonthlyMeasurementsCard(measurements: all.reversed.toList()),
-            Callout(summary, tone: CalloutTone.success),
+            Callout(summary, tone: CalloutTone.message),
           ],
         );
       },

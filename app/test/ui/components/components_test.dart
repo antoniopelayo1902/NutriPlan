@@ -358,7 +358,8 @@ void main() {
       ),
     );
     expect(find.text('cambiado'), findsOneWidget);
-    expect(find.text('1 Cereal · 1 Fruta'), findsOneWidget);
+    expect(find.text('1 Cereal'), findsOneWidget);
+    expect(find.text('1 Fruta'), findsOneWidget);
     await tester.tap(find.text('Cambiar'));
     await tester.tap(find.text('Marcar'));
     expect((change, toggle), (1, 1));

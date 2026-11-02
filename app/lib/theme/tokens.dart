@@ -1,249 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'accent.dart';
 import 'primitives.dart';
+import 'semantic_colors.dart';
+import 'semantic_colors_lerp.dart';
 
-/// Semantic colors (purpose-named). Components read only these.
-@immutable
-class SemanticColors {
-  const SemanticColors({
-    required this.bgAppGradient,
-    required this.bgSurface,
-    required this.bgSurfaceSubtle,
-    required this.bgInverse,
-    required this.bgTrack,
-    required this.bgEmpty,
-    required this.textPrimary,
-    required this.textSecondary,
-    required this.textMuted,
-    required this.textFaint,
-    required this.textInverse,
-    required this.textAccent,
-    required this.borderDefault,
-    required this.borderStrong,
-    required this.divider,
-    required this.accent,
-    required this.accentSoft,
-    required this.accentMuted,
-    required this.successBg,
-    required this.successFg,
-    required this.warningBg,
-    required this.warningFg,
-    required this.dangerBg,
-    required this.dangerFg,
-    required this.infoBg,
-    required this.infoFg,
-    required this.dayComplete,
-    required this.dayPartial,
-    required this.dayPending,
-    required this.pressOverlay,
-    required this.glass,
-    required this.transparent,
-  });
-
-  /// Default (terracotta) palette.
-  factory SemanticColors.base() => const SemanticColors(
-    bgAppGradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: <Color>[Prim.sand50, Prim.sand100, Prim.sand150],
-    ),
-    bgSurface: Prim.sand0,
-    bgSurfaceSubtle: Prim.sand25,
-    bgInverse: Prim.sand900,
-    bgTrack: Prim.sand200,
-    bgEmpty: Prim.sand300,
-    textPrimary: Prim.sand900,
-    textSecondary: Prim.sand850,
-    textMuted: Prim.sand800,
-    textFaint: Prim.sand600,
-    textInverse: Prim.sand0,
-    textAccent: Prim.terracotta700,
-    borderDefault: Prim.sand400,
-    borderStrong: Prim.sand500,
-    divider: Prim.sand200,
-    accent: Prim.terracotta500,
-    accentSoft: Prim.terracotta100,
-    accentMuted: Prim.terracotta300,
-    successBg: Prim.olive150,
-    successFg: Prim.olive900,
-    warningBg: Prim.amber100,
-    warningFg: Prim.amber700,
-    dangerBg: Prim.brick100,
-    dangerFg: Prim.brick700,
-    infoBg: Prim.olive100,
-    infoFg: Prim.olive800,
-    dayComplete: Prim.olive500,
-    dayPartial: Prim.amber500,
-    dayPending: Prim.sand500,
-    pressOverlay: Prim.pressOverlay,
-    glass: Prim.glass85,
-    transparent: Prim.transparent,
-  );
-
-  final LinearGradient bgAppGradient;
-  final Color bgSurface;
-  final Color bgSurfaceSubtle;
-  final Color bgInverse;
-  final Color bgTrack;
-  final Color bgEmpty;
-  final Color textPrimary;
-  final Color textSecondary;
-  final Color textMuted;
-  final Color textFaint;
-  final Color textInverse;
-  final Color textAccent;
-  final Color borderDefault;
-  final Color borderStrong;
-  final Color divider;
-  final Color accent;
-  final Color accentSoft;
-  final Color accentMuted;
-  final Color successBg;
-  final Color successFg;
-  final Color warningBg;
-  final Color warningFg;
-  final Color dangerBg;
-  final Color dangerFg;
-  final Color infoBg;
-  final Color infoFg;
-  final Color dayComplete;
-  final Color dayPartial;
-  final Color dayPending;
-  final Color pressOverlay;
-  final Color glass;
-  final Color transparent;
-
-  // Fit tokens alias the status tokens (spec 1.2).
-  Color get fitYesBg => successBg;
-  Color get fitYesFg => successFg;
-  Color get fitAdjustBg => warningBg;
-  Color get fitAdjustFg => warningFg;
-  Color get fitNoBg => dangerBg;
-  Color get fitNoFg => dangerFg;
-
-  /// Re-derives the accent family from [accent]. The default terracotta keeps
-  /// the exact palette values from the spec.
-  SemanticColors withAccent(Color accent) {
-    if (accent == Prim.terracotta500) return SemanticColors.base();
-    return copyWith(
-      accent: accent,
-      accentSoft: Color.lerp(accent, bgSurface, 0.9),
-      accentMuted: Color.lerp(accent, bgSurface, 0.6),
-      textAccent: deriveTextAccent(accent, bgSurface),
-    );
-  }
-
-  SemanticColors copyWith({
-    LinearGradient? bgAppGradient,
-    Color? bgSurface,
-    Color? bgSurfaceSubtle,
-    Color? bgInverse,
-    Color? bgTrack,
-    Color? bgEmpty,
-    Color? textPrimary,
-    Color? textSecondary,
-    Color? textMuted,
-    Color? textFaint,
-    Color? textInverse,
-    Color? textAccent,
-    Color? borderDefault,
-    Color? borderStrong,
-    Color? divider,
-    Color? accent,
-    Color? accentSoft,
-    Color? accentMuted,
-    Color? successBg,
-    Color? successFg,
-    Color? warningBg,
-    Color? warningFg,
-    Color? dangerBg,
-    Color? dangerFg,
-    Color? infoBg,
-    Color? infoFg,
-    Color? dayComplete,
-    Color? dayPartial,
-    Color? dayPending,
-    Color? pressOverlay,
-    Color? glass,
-    Color? transparent,
-  }) {
-    return SemanticColors(
-      bgAppGradient: bgAppGradient ?? this.bgAppGradient,
-      bgSurface: bgSurface ?? this.bgSurface,
-      bgSurfaceSubtle: bgSurfaceSubtle ?? this.bgSurfaceSubtle,
-      bgInverse: bgInverse ?? this.bgInverse,
-      bgTrack: bgTrack ?? this.bgTrack,
-      bgEmpty: bgEmpty ?? this.bgEmpty,
-      textPrimary: textPrimary ?? this.textPrimary,
-      textSecondary: textSecondary ?? this.textSecondary,
-      textMuted: textMuted ?? this.textMuted,
-      textFaint: textFaint ?? this.textFaint,
-      textInverse: textInverse ?? this.textInverse,
-      textAccent: textAccent ?? this.textAccent,
-      borderDefault: borderDefault ?? this.borderDefault,
-      borderStrong: borderStrong ?? this.borderStrong,
-      divider: divider ?? this.divider,
-      accent: accent ?? this.accent,
-      accentSoft: accentSoft ?? this.accentSoft,
-      accentMuted: accentMuted ?? this.accentMuted,
-      successBg: successBg ?? this.successBg,
-      successFg: successFg ?? this.successFg,
-      warningBg: warningBg ?? this.warningBg,
-      warningFg: warningFg ?? this.warningFg,
-      dangerBg: dangerBg ?? this.dangerBg,
-      dangerFg: dangerFg ?? this.dangerFg,
-      infoBg: infoBg ?? this.infoBg,
-      infoFg: infoFg ?? this.infoFg,
-      dayComplete: dayComplete ?? this.dayComplete,
-      dayPartial: dayPartial ?? this.dayPartial,
-      dayPending: dayPending ?? this.dayPending,
-      pressOverlay: pressOverlay ?? this.pressOverlay,
-      glass: glass ?? this.glass,
-      transparent: transparent ?? this.transparent,
-    );
-  }
-
-  static SemanticColors lerp(SemanticColors a, SemanticColors b, double t) {
-    Color l(Color x, Color y) => Color.lerp(x, y, t) ?? y;
-    return SemanticColors(
-      bgAppGradient:
-          LinearGradient.lerp(a.bgAppGradient, b.bgAppGradient, t) ??
-          b.bgAppGradient,
-      bgSurface: l(a.bgSurface, b.bgSurface),
-      bgSurfaceSubtle: l(a.bgSurfaceSubtle, b.bgSurfaceSubtle),
-      bgInverse: l(a.bgInverse, b.bgInverse),
-      bgTrack: l(a.bgTrack, b.bgTrack),
-      bgEmpty: l(a.bgEmpty, b.bgEmpty),
-      textPrimary: l(a.textPrimary, b.textPrimary),
-      textSecondary: l(a.textSecondary, b.textSecondary),
-      textMuted: l(a.textMuted, b.textMuted),
-      textFaint: l(a.textFaint, b.textFaint),
-      textInverse: l(a.textInverse, b.textInverse),
-      textAccent: l(a.textAccent, b.textAccent),
-      borderDefault: l(a.borderDefault, b.borderDefault),
-      borderStrong: l(a.borderStrong, b.borderStrong),
-      divider: l(a.divider, b.divider),
-      accent: l(a.accent, b.accent),
-      accentSoft: l(a.accentSoft, b.accentSoft),
-      accentMuted: l(a.accentMuted, b.accentMuted),
-      successBg: l(a.successBg, b.successBg),
-      successFg: l(a.successFg, b.successFg),
-      warningBg: l(a.warningBg, b.warningBg),
-      warningFg: l(a.warningFg, b.warningFg),
-      dangerBg: l(a.dangerBg, b.dangerBg),
-      dangerFg: l(a.dangerFg, b.dangerFg),
-      infoBg: l(a.infoBg, b.infoBg),
-      infoFg: l(a.infoFg, b.infoFg),
-      dayComplete: l(a.dayComplete, b.dayComplete),
-      dayPartial: l(a.dayPartial, b.dayPartial),
-      dayPending: l(a.dayPending, b.dayPending),
-      pressOverlay: l(a.pressOverlay, b.pressOverlay),
-      glass: l(a.glass, b.glass),
-      transparent: l(a.transparent, b.transparent),
-    );
-  }
-}
+export 'semantic_aliases.dart';
+export 'semantic_colors.dart';
 
 /// 4-pt spacing scale (spec 1.4).
 @immutable
@@ -368,6 +130,12 @@ class AppSizing {
   final double focusRingOffset = 2;
   final double chartHeight = 120;
   final double barStub = 6;
+  final double fitBar = 6;
+  final double mealStrip = 4;
+  final double streakDisc = 56;
+  final double decoCircleLg = 96;
+  final double decoCircleSm = 48;
+  final double decoOffset = 24;
   final double dot = 8;
   final double dotLg = 10;
   final double progressBar = 8;
@@ -519,6 +287,6 @@ class AppTokens extends ThemeExtension<AppTokens> {
   @override
   AppTokens lerp(ThemeExtension<AppTokens>? other, double t) {
     if (other is! AppTokens) return this;
-    return copyWith(colors: SemanticColors.lerp(colors, other.colors, t));
+    return copyWith(colors: lerpSemanticColors(colors, other.colors, t));
   }
 }

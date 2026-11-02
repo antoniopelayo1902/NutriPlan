@@ -10,6 +10,8 @@ enum CardTone {
   subtle,
   inverse,
   accentSoft,
+  highlightSoft,
+  message,
   success,
   info,
   neutralDashed,
@@ -28,6 +30,8 @@ class AppCard extends StatelessWidget {
     this.radius,
     this.onTap,
     this.semanticLabel,
+    this.topStrip,
+    this.backdrop,
   });
 
   final Widget child;
@@ -40,6 +44,12 @@ class AppCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String? semanticLabel;
 
+  /// Thin decorative band flush with the card's top edge (clipped to it).
+  final Widget? topStrip;
+
+  /// Decorative layer painted behind the content (clipped to the card).
+  final Widget? backdrop;
+
   Color _fill(SemanticColors c) {
     switch (tone) {
       case CardTone.surface:
@@ -50,6 +60,10 @@ class AppCard extends StatelessWidget {
         return c.bgInverse;
       case CardTone.accentSoft:
         return c.accentSoft;
+      case CardTone.highlightSoft:
+        return c.highlightSoft;
+      case CardTone.message:
+        return c.messageSoft;
       case CardTone.success:
         return c.successBg;
       case CardTone.info:
@@ -57,6 +71,27 @@ class AppCard extends StatelessWidget {
       case CardTone.neutralDashed:
         return c.transparent;
     }
+  }
+
+  Widget _content(double pad, double r) {
+    Widget body = Padding(padding: EdgeInsets.all(pad), child: child);
+    if (topStrip == null && backdrop == null) return body;
+    if (topStrip != null) {
+      body = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[topStrip!, body],
+      );
+    }
+    if (backdrop != null) {
+      body = Stack(
+        children: <Widget>[
+          Positioned.fill(child: backdrop!),
+          body,
+        ],
+      );
+    }
+    return ClipRRect(borderRadius: BorderRadius.circular(r), child: body);
   }
 
   @override
@@ -80,7 +115,7 @@ class AppCard extends StatelessWidget {
           boxShadow: dashed ? null : shadows,
         ),
         position: DecorationPosition.background,
-        child: Padding(padding: EdgeInsets.all(pad), child: child),
+        child: _content(pad, r),
       );
       if (dashed) {
         box = CustomPaint(

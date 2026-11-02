@@ -28,12 +28,12 @@ void main() {
     }
   });
 
-  test('raw colors only live in theme/primitives.dart', () {
+  test('raw colors only live in theme/primitives*.dart', () {
     final RegExp bad = RegExp(
       r'Color\(0x|(?<![A-Za-z])Colors\.|#[0-9A-Fa-f]{6}\b',
     );
     for (final File f in all.where(
-      (File f) => !f.path.endsWith('theme/primitives.dart'),
+      (File f) => !RegExp(r'theme/primitives(_\w+)?\.dart$').hasMatch(f.path),
     )) {
       expect(
         bad.hasMatch(strip(f.readAsStringSync())),
@@ -99,7 +99,7 @@ void main() {
     }
   });
 
-  test('pubspec has no runtime dependency beyond the Flutter SDK packages and cupertino_icons', () {
+  test('pubspec has no runtime dependency beyond the Flutter SDK packages, cupertino_icons and firebase_core', () {
     final String y = File('pubspec.yaml').readAsStringSync();
     final String deps = y
         .split('dependencies:')[1]
@@ -112,6 +112,7 @@ void main() {
       'flutter',
       'flutter_localizations',
       'cupertino_icons',
+      'firebase_core',
     ]);
   });
 
