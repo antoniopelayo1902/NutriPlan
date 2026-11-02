@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>176299198859-vrv743r9bih1ojai18kh3als2avbpunf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.176299198859-vrv743r9bih1ojai18kh3als2avbpunf</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDus_saXU0QRQhMfQNoxeNCJBlDjF6xHnc</string>
+	<string>AIzaSyAgCOrj5QMs3J1I6HifQj8OPJ22vyfrU8Q</string>
 	<key>GCM_SENDER_ID</key>
-	<string>115539449872</string>
+	<string>176299198859</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>mx.iteso.nutriplan</string>
 	<key>PROJECT_ID</key>
-	<string>nutriplan-88357</string>
+	<string>nutriplann-e4b0f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>nutriplan-88357.firebasestorage.app</string>
+	<string>nutriplann-e4b0f.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:115539449872:ios:94b840e1e8dd0b1e285295</string>
+	<string>1:176299198859:ios:edd5590c0500392258c78e</string>
 </dict>
 </plist>

@@ -5,6 +5,7 @@ import 'application/app_controllers.dart';
 import 'core/i18n/strings_es_mx.dart';
 import 'theme/accent_controller.dart';
 import 'theme/app_theme.dart';
+import 'ui/screens/login/auth_gate.dart';
 import 'ui/shell/app_shell.dart';
 
 /// Root widget. Rebuilds the theme whenever the runtime accent changes.
@@ -13,12 +14,17 @@ class NutriPlanApp extends StatelessWidget {
     super.key,
     required this.controllers,
     required this.accent,
+    this.requireAuth = false,
   });
 
   static const Locale _locale = Locale('es', 'MX');
 
   final AppControllers controllers;
   final AccentController accent;
+
+  /// Puts the Firebase login in front of the app. Off in widget tests,
+  /// which run without Firebase.
+  final bool requireAuth;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,9 @@ class NutriPlanApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           theme: buildTheme(accent: color),
-          home: AppShell(controllers: controllers),
+          home: requireAuth
+              ? AuthGate(child: AppShell(controllers: controllers))
+              : AppShell(controllers: controllers),
         );
       },
     );

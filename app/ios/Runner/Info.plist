@@ -70,5 +70,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- URL scheme para que Google regrese a la app despues de iniciar sesion (REVERSED_CLIENT_ID). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.176299198859-vrv743r9bih1ojai18kh3als2avbpunf</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

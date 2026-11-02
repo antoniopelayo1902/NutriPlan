@@ -1,45 +1,79 @@
 {
   "project_info": {
-    "project_number": "115539449872",
-    "project_id": "nutriplan-88357",
-    "storage_bucket": "nutriplan-88357.firebasestorage.app"
+    "project_number": "176299198859",
+    "project_id": "nutriplann-e4b0f",
+    "storage_bucket": "nutriplann-e4b0f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115539449872:android:5b79dd22b11fd11a285295",
+        "mobilesdk_app_id": "1:176299198859:android:87c368895320c26d58c78e",
         "android_client_info": {
-          "package_name": "com.example.firebase"
+          "package_name": "mx.iteso.antonio.tarea14"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "176299198859-lp6gfp61jisoaessjd9q1e69jcvd767u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDWHQ5CyJN6xelYqU-qpG40_u--00BhGfA"
+          "current_key": "AIzaSyCvbFbpvSg1w0YrSm6_-f7-wmV5fmtjJ3w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176299198859-lp6gfp61jisoaessjd9q1e69jcvd767u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "176299198859-om021b3k5qned0gqfld9o2fpg26hppac.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.iteso.antonio.tarea14"
+              }
+            }
+          ]
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115539449872:android:523323950f1cc257285295",
+        "mobilesdk_app_id": "1:176299198859:android:e0b0252e8cc9e59058c78e",
         "android_client_info": {
           "package_name": "mx.iteso.nutriplan"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "176299198859-lp6gfp61jisoaessjd9q1e69jcvd767u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDWHQ5CyJN6xelYqU-qpG40_u--00BhGfA"
+          "current_key": "AIzaSyCvbFbpvSg1w0YrSm6_-f7-wmV5fmtjJ3w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176299198859-lp6gfp61jisoaessjd9q1e69jcvd767u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "176299198859-om021b3k5qned0gqfld9o2fpg26hppac.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.iteso.antonio.tarea14"
+              }
+            }
+          ]
         }
       }
     }

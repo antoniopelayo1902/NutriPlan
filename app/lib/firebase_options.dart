@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDWHQ5CyJN6xelYqU-qpG40_u--00BhGfA',
-    appId: '1:115539449872:android:523323950f1cc257285295',
-    messagingSenderId: '115539449872',
-    projectId: 'nutriplan-88357',
-    storageBucket: 'nutriplan-88357.firebasestorage.app',
+    apiKey: 'AIzaSyCvbFbpvSg1w0YrSm6_-f7-wmV5fmtjJ3w',
+    appId: '1:176299198859:android:e0b0252e8cc9e59058c78e',
+    messagingSenderId: '176299198859',
+    projectId: 'nutriplann-e4b0f',
+    storageBucket: 'nutriplann-e4b0f.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDus_saXU0QRQhMfQNoxeNCJBlDjF6xHnc',
-    appId: '1:115539449872:ios:94b840e1e8dd0b1e285295',
-    messagingSenderId: '115539449872',
-    projectId: 'nutriplan-88357',
-    storageBucket: 'nutriplan-88357.firebasestorage.app',
+    apiKey: 'AIzaSyAgCOrj5QMs3J1I6HifQj8OPJ22vyfrU8Q',
+    appId: '1:176299198859:ios:edd5590c0500392258c78e',
+    messagingSenderId: '176299198859',
+    projectId: 'nutriplann-e4b0f',
+    storageBucket: 'nutriplann-e4b0f.firebasestorage.app',
+    iosClientId: '176299198859-vrv743r9bih1ojai18kh3als2avbpunf.apps.googleusercontent.com',
     iosBundleId: 'mx.iteso.nutriplan',
   );
 }
