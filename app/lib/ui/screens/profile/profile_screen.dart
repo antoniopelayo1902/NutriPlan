@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../application/account_identity.dart';
 import '../../../application/profile_controller.dart';
 import '../../../application/profile_photo_controller.dart';
 import '../../../application/toast_controller.dart';
@@ -9,6 +10,7 @@ import '../../../core/i18n/strings_es_mx.dart';
 import '../../../data/gallery.dart';
 import '../../../data/profile_photo_store.dart';
 import '../../../data/user_service.dart';
+import '../../../domain/models/user_role.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../../components/actions/app_button.dart';
@@ -27,7 +29,8 @@ import '../page_frame.dart';
 import 'scan_plan_screen.dart';
 import 'share_plan_screen.dart';
 
-/// Perfil: foto desde la galería, nombre, token, Factor WOW y cuenta.
+/// Perfil de paciente o nutrióloga: foto desde la galería, nombre, token,
+/// Factor WOW y cuenta.
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -44,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _name.text = context.read<ProfileController>().patient?.name ?? '';
+    _name.text = context.read<AccountIdentity>().displayName ?? '';
   }
 
   @override
@@ -87,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _saving = true;
     });
     final ToastController toast = context.read<ToastController>();
-    final bool ok = await context.read<ProfileController>().rename(_name.text);
+    final bool ok = await context.read<AccountIdentity>().rename(_name.text);
     if (!mounted) return;
     setState(() => _saving = false);
     toast.show(ok ? S.nameSaved : S.actionFailed);
@@ -118,6 +121,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  bool get _isNutri => context.read<UserRole>() == UserRole.nutritionist;
+
   void _open(Widget screen) => Navigator.push(
     context,
     MaterialPageRoute<void>(builder: (BuildContext _) => screen),
@@ -131,11 +136,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       eyebrow: S.profileEyebrow,
       title: S.profileTitle,
       children: <Widget>[
-        Consumer2<ProfileController, ProfilePhotoController>(
+        Consumer2<AccountIdentity, ProfilePhotoController>(
           builder:
               (
                 BuildContext context,
-                ProfileController profile,
+                AccountIdentity account,
                 ProfilePhotoController photo,
                 Widget? _,
               ) => AppCard(
@@ -145,9 +150,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: <Widget>[
                     Avatar(
                       key: const Key('profileAvatar'),
-                      initials:
-                          profile.patient?.initials ??
-                          S.patientInitialsFallback,
+                      initials: account.initials.isEmpty
+                          ? S.patientInitialsFallback
+                          : account.initials,
                       size: t.size.avatarLg,
                       photoPath: photo.path,
                     ),
@@ -187,23 +192,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: AppStack(
             gap: t.space.s3,
             children: <Widget>[
-              const Eyebrow(S.wowEyebrow),
-              const AppText(S.wowBody, tone: TextTone.secondary),
+              Eyebrow(_isNutri ? S.nutriWowEyebrow : S.wowEyebrow),
+              AppText(
+                _isNutri ? S.nutriWowBody : S.scanBodyAny,
+                tone: TextTone.secondary,
+              ),
               AppButton(
                 key: const Key('sharePlanButton'),
                 label: S.sharePlan,
                 iconLeft: AppIconName.qr,
                 fullWidth: true,
-                onPressed: () => _open(const SharePlanScreen()),
+                onPressed: () => _open(SharePlanScreen(nutritionist: _isNutri)),
               ),
-              AppButton(
-                key: const Key('scanPlanButton'),
-                label: S.scanPlan,
-                iconLeft: AppIconName.camera,
-                fullWidth: true,
-                variant: ButtonVariant.outlineNeutral,
-                onPressed: () => _open(const ScanPlanScreen()),
-              ),
+              // La nutrióloga no importa planes: solo comparte su código.
+              if (!_isNutri)
+                AppButton(
+                  key: const Key('scanPlanButton'),
+                  label: S.scanAny,
+                  iconLeft: AppIconName.camera,
+                  fullWidth: true,
+                  variant: ButtonVariant.outlineNeutral,
+                  onPressed: () => _open(const ScanPlanScreen()),
+                ),
             ],
           ),
         ),
@@ -237,40 +247,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _accountCard(AppTokens t, AuthScope? auth) {
     return AppCard(
       padding: t.space.s5,
-      child: Consumer<ProfileController>(
-        builder: (BuildContext context, ProfileController profile, Widget? _) =>
-            AppStack(
-              gap: t.space.s2,
-              children: <Widget>[
-                const Eyebrow(S.accountEyebrow),
-                ListItem(title: S.emailLabel, subtitle: auth?.email ?? ''),
-                const AppDivider(),
-                ListItem(
-                  title: S.nutritionistLabel,
-                  subtitle: profile.nutritionist?.name ?? '',
-                ),
-                const AppDivider(),
-                FutureBuilder<Map<String, dynamic>>(
-                  future: _account,
-                  builder:
-                      (
-                        BuildContext context,
-                        AsyncSnapshot<Map<String, dynamic>> snapshot,
-                      ) {
-                        final bool hasToken = snapshot.data?['token'] is String;
-                        return ListItem(
-                          key: const Key('tokenRow'),
-                          title: S.tokenLabel,
-                          subtitle: !snapshot.hasData
-                              ? S.loadingAccount
-                              : hasToken
-                              ? S.tokenSaved
-                              : S.tokenMissing,
-                        );
-                      },
-                ),
-              ],
+      child: Builder(
+        builder: (BuildContext context) => AppStack(
+          gap: t.space.s2,
+          children: <Widget>[
+            const Eyebrow(S.accountEyebrow),
+            ListItem(title: S.emailLabel, subtitle: auth?.email ?? ''),
+            const AppDivider(),
+            ListItem(
+              key: const Key('roleRow'),
+              title: S.roleLabel,
+              subtitle: _isNutri ? S.roleNutritionist : S.rolePatient,
             ),
+            const AppDivider(),
+            if (!_isNutri) ...<Widget>[
+              Consumer<ProfileController>(
+                builder:
+                    (
+                      BuildContext context,
+                      ProfileController profile,
+                      Widget? _,
+                    ) => ListItem(
+                      key: const Key('nutritionistRow'),
+                      title: S.nutritionistLabel,
+                      subtitle: profile.nutritionist?.name ?? '',
+                    ),
+              ),
+              const AppDivider(),
+            ],
+            FutureBuilder<Map<String, dynamic>>(
+              future: _account,
+              builder:
+                  (
+                    BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot,
+                  ) {
+                    final bool hasToken = snapshot.data?['token'] is String;
+                    return ListItem(
+                      key: const Key('tokenRow'),
+                      title: S.tokenLabel,
+                      subtitle: !snapshot.hasData
+                          ? S.loadingAccount
+                          : hasToken
+                          ? S.tokenSaved
+                          : S.tokenMissing,
+                    );
+                  },
+            ),
+          ],
+        ),
       ),
     );
   }

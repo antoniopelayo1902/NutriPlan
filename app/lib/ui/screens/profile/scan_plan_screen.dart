@@ -7,6 +7,7 @@ import '../../../application/app_controllers.dart';
 import '../../../application/toast_controller.dart';
 import '../../../core/i18n/strings_es_mx.dart';
 import '../../../data/gallery.dart';
+import '../../../data/nutritionist_service.dart';
 import '../../../data/plan_share_service.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
@@ -19,8 +20,9 @@ import '../../components/primitives/app_text.dart';
 import '../login/auth_gate.dart';
 import '../page_frame.dart';
 
-/// Factor WOW (parte 2): escanea el QR de otro plan con la cámara
-/// (mobile_scanner) o lo lee de una foto de la galería, y lo importa.
+/// Factor WOW (parte 2): escanea un QR con la cámara (mobile_scanner), de
+/// una foto o pegado. El de una nutrióloga vincula al paciente con ella; el
+/// de otro paciente importa su plan.
 class ScanPlanScreen extends StatefulWidget {
   const ScanPlanScreen({super.key});
 
@@ -93,8 +95,13 @@ class _ScanPlanScreenState extends State<ScanPlanScreen> {
     final ToastController toast = context.read<ToastController>();
     final AppControllers controllers = context.read<AppControllers>();
     final String? myUid = AuthScope.maybeOf(context)?.uid;
+    final String? nutriUid = PlanShareService.nutriUidFrom(raw);
     final String? fromUid = PlanShareService.uidFrom(raw);
     try {
+      if (nutriUid != null && myUid != null) {
+        await _link(myUid, nutriUid, controllers, toast);
+        return;
+      }
       if (fromUid == null || myUid == null) {
         toast.show(S.invalidCode);
         return;
@@ -125,6 +132,42 @@ class _ScanPlanScreenState extends State<ScanPlanScreen> {
     }
   }
 
+  /// Vincula al paciente con la nutrióloga del código.
+  Future<void> _link(
+    String myUid,
+    String nutriUid,
+    AppControllers controllers,
+    ToastController toast,
+  ) async {
+    if (controllers.profile.nutritionist?.id == nutriUid) {
+      toast.show(S.alreadyLinked);
+      return;
+    }
+    final String name;
+    try {
+      name = await NutritionistService.loadName(nutriUid);
+    } catch (_) {
+      toast.show(S.invalidCode);
+      return;
+    }
+    if (!mounted) return;
+    final bool sure = await showConfirmDialog(
+      context,
+      title: S.linkTitle(name),
+      body: S.linkBody,
+      confirmLabel: S.linkAction,
+    );
+    if (!sure || !mounted) return;
+    try {
+      await NutritionistService.link(myUid, nutriUid);
+      await controllers.profile.load();
+      toast.show(S.linked(name));
+      if (mounted) Navigator.popUntil(context, (Route<void> r) => r.isFirst);
+    } catch (_) {
+      toast.show(S.linkFailed);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppTokens t = context.tokens;
@@ -132,7 +175,7 @@ class _ScanPlanScreenState extends State<ScanPlanScreen> {
       eyebrow: S.wowEyebrow,
       title: S.scanTitle,
       children: <Widget>[
-        const AppText(S.scanBody, tone: TextTone.secondary),
+        const AppText(S.scanBodyAny, tone: TextTone.secondary),
         ClipRRect(
           borderRadius: BorderRadius.circular(t.radius.xl),
           child: SizedBox(

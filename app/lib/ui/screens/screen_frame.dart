@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../application/app_controllers.dart';
-import '../../application/profile_photo_controller.dart';
-import '../../core/i18n/strings_es_mx.dart';
 import '../../theme/tokens.dart';
 import '../../theme/tokens_context.dart';
-import '../components/data_display/avatar.dart';
+import '../components/data_display/profile_avatar_button.dart';
 import '../components/data_display/screen_header.dart';
 import '../components/primitives/app_stack.dart';
-import '../components/primitives/pressable.dart';
-import 'profile/profile_screen.dart';
 
 /// Scrollable page with the shared header (patient initials on the right).
 /// Al jalar hacia abajo (swipe down) recarga todo desde Firebase.
@@ -48,37 +43,10 @@ class ScreenFrame extends StatelessWidget {
         child: AppStack(
           gap: t.space.s5,
           children: <Widget>[
-            ListenableBuilder(
-              listenable: controllers.profile,
-              builder: (BuildContext context, Widget? _) => ScreenHeader(
-                eyebrow: eyebrow,
-                title: title,
-                trailing: Pressable(
-                  key: const Key('avatarButton'),
-                  semanticLabel: S.openProfile,
-                  // Abre el perfil con Navigator.push.
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext _) => const ProfileScreen(),
-                    ),
-                  ),
-                  builder: (BuildContext context, PressState _) =>
-                      Consumer<ProfilePhotoController>(
-                        builder:
-                            (
-                              BuildContext context,
-                              ProfilePhotoController photo,
-                              Widget? _,
-                            ) => Avatar(
-                              initials:
-                                  controllers.profile.patient?.initials ??
-                                  S.patientInitialsFallback,
-                              photoPath: photo.path,
-                            ),
-                      ),
-                ),
-              ),
+            ScreenHeader(
+              eyebrow: eyebrow,
+              title: title,
+              trailing: const ProfileAvatarButton(),
             ),
             ...children,
           ],

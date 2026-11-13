@@ -373,4 +373,84 @@ abstract final class S {
   static String deleteSessionBody(String activity, int minutes) =>
       'Se borrará la sesión de $activity de $minutes min.';
   static String dayChip(String initial, int day) => '$initial $day';
+
+  // Tipos de cuenta
+  static const String roleLabel = 'Tipo de cuenta';
+  static const String rolePatient = 'Paciente';
+  static const String roleNutritionist = 'Nutrióloga';
+  static const String roleHint = 'Se usa al crear tu cuenta.';
+
+  // Vincular paciente con nutrióloga
+  static const String nutriCodeTitle = 'Mi código';
+  static const String nutriWowEyebrow = 'Vincular pacientes';
+  static const String nutriCodeBody =
+      'Tus pacientes escanean este código para vincularse contigo.';
+  static const String nutriWowBody =
+      'Comparte tu código QR para que tus pacientes se vinculen contigo.';
+  static const String scanAny = 'Escanear código QR';
+  static const String scanBodyAny =
+      'Escanea el código de tu nutrióloga para vincularte, o el de otro '
+      'paciente para importar su plan.';
+  static String linkTitle(String name) => '¿Vincularte con $name?';
+  static const String linkBody =
+      'Tu nutrióloga podrá ver tu información, registrar tus medidas y '
+      'ajustar tu plan.';
+  static const String linkAction = 'Vincular';
+  static String linked(String name) => 'Te vinculaste con $name';
+  static const String alreadyLinked = 'Ya estás vinculada con esa nutrióloga.';
+  static const String linkFailed = 'No se pudo vincular.';
+
+  // Nutrióloga: pacientes
+  static const String nutriEyebrow = 'Consultorio';
+  static const String patientsTitle = 'Mis pacientes';
+  static const String patientsEmptyTitle = 'Aún no tienes pacientes';
+  static const String patientsEmptyBody =
+      'Comparte tu código QR desde tu perfil para que se vinculen contigo.';
+  static const String shareMyCode = 'Compartir mi código';
+  static String patientCount(int n) => n == 1 ? '1 paciente' : '$n pacientes';
+  static const String unlinkPatient = 'Desvincular paciente';
+  static String unlinkTitle(String name) => '¿Desvincular a $name?';
+  static const String unlinkBody =
+      'Ya no aparecerá en tu lista. Sus datos no se borran.';
+  static const String unlinkAction = 'Desvincular';
+  static const String patientUnlinked = 'Paciente desvinculado';
+
+  // Nutrióloga: detalle del paciente
+  static const String patientEyebrow = 'Paciente';
+  static const String tabMeasures = 'Medidas';
+  static const String tabHistory = 'Historial';
+  static const String tabPortions = 'Porciones';
+  static const String addMeasurement = 'Agregar medida';
+  static const String newMeasurement = 'Nueva medida';
+  static const String editMeasurement = 'Editar medida';
+  static const String deleteMeasurement = 'Eliminar medida';
+  static String deleteMeasurementTitle(String date) =>
+      '¿Eliminar la medida del $date?';
+  static const String deleteMeasurementBody =
+      'Tu paciente dejará de verla en su progreso.';
+  static const String measurementSaved = 'Medida guardada';
+  static const String measurementUpdated = 'Medida actualizada';
+  static const String measurementDeleted = 'Medida eliminada';
+  static String measurementSummary(String weight, String fat, String muscle) =>
+      '$weight · $fat grasa · $muscle músculo';
+  static const String fieldWeight = 'Peso (kg)';
+  static const String fieldHeight = 'Talla (m)';
+  static const String fieldBodyFat = 'Grasa corporal (%)';
+  static const String fieldMuscle = 'Masa muscular (kg)';
+  static const String fieldWaist = 'Cintura (cm, opcional)';
+  static const String fieldHip = 'Cadera (cm, opcional)';
+  static const String fieldTricipital = 'Pliegue tricipital (mm, opcional)';
+  static const String fieldInvalid = 'Escribe un número mayor a 0.';
+  static const String measurementDateLabel = 'Fecha';
+  static String bmiLabel(String bmi) => 'IMC $bmi';
+  static String fullDate(String dayMonth, int year) => '$dayMonth de $year';
+  static const String portionsBody =
+      'Porciones diarias por grupo. Al publicar, tu paciente ve el plan '
+      'nuevo al refrescar.';
+  static String portionsKcal(String kcal) => '$kcal kcal al día';
+  static const String publishPlan = 'Publicar plan';
+  static const String planPublished = 'Plan publicado';
+  static const String noPatientPlan = 'Este paciente todavía no tiene plan.';
+  static String increase(String group) => 'Subir $group';
+  static String decrease(String group) => 'Bajar $group';
 }

@@ -9,6 +9,18 @@ import 'firestore/firestore_paths.dart';
 /// Factor WOW: compartir el plan con un QR e importarlo escaneándolo.
 abstract final class PlanShareService {
   static const String _prefix = 'nutriplan:plan:';
+  static const String _nutriPrefix = 'nutriplan:nutri:';
+
+  /// Código QR de una nutrióloga, para que sus pacientes se vinculen.
+  static String nutriCodeFor(String uid) => '$_nutriPrefix$uid';
+
+  /// Uid de la nutrióloga dentro de un código, o null si no es de ese tipo.
+  static String? nutriUidFrom(String raw) {
+    final String code = raw.trim();
+    if (!code.startsWith(_nutriPrefix)) return null;
+    final String uid = code.substring(_nutriPrefix.length);
+    return uid.isEmpty ? null : uid;
+  }
 
   /// Texto que va dentro del QR del usuario [uid].
   static String codeFor(String uid) => '$_prefix$uid';

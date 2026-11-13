@@ -21,4 +21,22 @@ class FirestoreMeasurementRepository implements MeasurementRepository {
         FirestoreMappers.measurementFromMap(d.id, d.data()),
     ];
   }
+
+  /// Create: la nutrióloga registra una medida nueva (id automático).
+  Future<void> add(Measurement m) async {
+    await FirestorePaths.measurements(uid)
+        .add(FirestoreMappers.measurementToMap(m));
+  }
+
+  /// Update: reemplaza la medida [m.id].
+  Future<void> update(Measurement m) async {
+    await FirestorePaths.measurements(uid)
+        .doc(m.id)
+        .set(FirestoreMappers.measurementToMap(m));
+  }
+
+  /// Delete: borra la medida [id].
+  Future<void> remove(String id) async {
+    await FirestorePaths.measurements(uid).doc(id).delete();
+  }
 }

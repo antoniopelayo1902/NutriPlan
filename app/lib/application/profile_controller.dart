@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 
 import '../domain/models/patient.dart';
 import '../domain/repositories/patient_repository.dart';
+import 'account_identity.dart';
 
 /// Patient and nutritionist identity shown in headers and copy.
-class ProfileController extends ChangeNotifier {
+class ProfileController extends ChangeNotifier implements AccountIdentity {
   ProfileController(this._repository);
 
   final PatientRepository _repository;
@@ -13,10 +14,17 @@ class ProfileController extends ChangeNotifier {
   Object? _error;
 
   Patient? get patient => _patient;
+
+  @override
+  String? get displayName => _patient?.name;
+
+  @override
+  String get initials => _patient?.initials ?? '';
   Nutritionist? get nutritionist => _nutritionist;
   bool get hasError => _error != null;
 
   /// Cambia el nombre en la base de datos. Regresa false si falla.
+  @override
   Future<bool> rename(String name) async {
     try {
       await _repository.updateName(name);

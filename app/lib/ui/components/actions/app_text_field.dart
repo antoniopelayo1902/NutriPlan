@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
     this.icon,
     this.keyboardType,
     this.errorText,
+    this.onChanged,
   });
 
   final TextEditingController controller;
@@ -21,6 +22,7 @@ class AppTextField extends StatelessWidget {
   final AppIconName? icon;
   final TextInputType? keyboardType;
   final String? errorText;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class AppTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
+      onChanged: onChanged,
       style: t.typo.bodyLg.copyWith(color: t.colors.textPrimary),
       decoration: InputDecoration(
         labelText: label,

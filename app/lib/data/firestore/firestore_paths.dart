@@ -8,6 +8,9 @@ abstract final class FirestorePaths {
   static const String nutritionists = 'nutritionists';
   static const String options = 'options';
 
+  static CollectionReference<Map<String, dynamic>> usersCollection() =>
+      db.collection(users);
+
   /// users/{uid}: perfil del paciente y token del dispositivo.
   static DocumentReference<Map<String, dynamic>> user(String uid) =>
       db.collection(users).doc(uid);

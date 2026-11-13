@@ -18,6 +18,7 @@ enum AppIconName {
   arrowRight,
   info,
   add,
+  remove,
   edit,
   delete,
   camera,
@@ -54,6 +55,8 @@ IconData _iconData(AppIconName n) {
       return Icons.info_outline_rounded;
     case AppIconName.add:
       return Icons.add_rounded;
+    case AppIconName.remove:
+      return Icons.remove_rounded;
     case AppIconName.edit:
       return Icons.edit_outlined;
     case AppIconName.delete:

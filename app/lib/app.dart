@@ -6,8 +6,10 @@ import 'application/app_controllers.dart';
 import 'core/i18n/strings_es_mx.dart';
 import 'theme/accent_controller.dart';
 import 'theme/app_theme.dart';
+import 'domain/models/user_role.dart';
 import 'ui/app_providers.dart';
 import 'ui/screens/login/auth_gate.dart';
+import 'ui/screens/nutri/nutri_home_screen.dart';
 import 'ui/shell/app_shell.dart';
 
 /// Root widget. Rebuilds the theme whenever the runtime accent changes.
@@ -57,11 +59,16 @@ class NutriPlanApp extends StatelessWidget {
   }
 }
 
-/// Primera pantalla del Navigator: las cinco pestañas.
+/// Primera pantalla del Navigator según el tipo de cuenta: las cinco
+/// pestañas del paciente o la lista de pacientes de la nutrióloga.
 class _Home extends StatelessWidget {
   const _Home();
 
   @override
-  Widget build(BuildContext context) =>
-      AppShell(controllers: context.read<AppControllers>());
+  Widget build(BuildContext context) {
+    if (context.watch<UserRole>() == UserRole.nutritionist) {
+      return const NutriHomeScreen();
+    }
+    return AppShell(controllers: context.read<AppControllers>());
+  }
 }

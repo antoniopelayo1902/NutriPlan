@@ -15,27 +15,31 @@ import '../../components/primitives/app_text.dart';
 import '../login/auth_gate.dart';
 import '../page_frame.dart';
 
-/// Factor WOW (parte 1): el QR con el código del plan del usuario.
+/// Factor WOW (parte 1): el QR con el código del plan del paciente, o el
+/// código de la nutrióloga para vincular pacientes si [nutritionist].
 class SharePlanScreen extends StatelessWidget {
-  const SharePlanScreen({super.key});
+  const SharePlanScreen({super.key, this.nutritionist = false});
+
+  final bool nutritionist;
 
   @override
   Widget build(BuildContext context) {
     final AppTokens t = context.tokens;
-    final String code = PlanShareService.codeFor(
-      AuthScope.maybeOf(context)?.uid ?? '',
-    );
+    final String uid = AuthScope.maybeOf(context)?.uid ?? '';
+    final String code = nutritionist
+        ? PlanShareService.nutriCodeFor(uid)
+        : PlanShareService.codeFor(uid);
     return PageFrame(
       eyebrow: S.wowEyebrow,
-      title: S.sharePlanTitle,
+      title: nutritionist ? S.nutriCodeTitle : S.sharePlanTitle,
       children: <Widget>[
         AppCard(
           child: AppStack(
             gap: t.space.s4,
             align: CrossAxisAlignment.center,
             children: <Widget>[
-              const AppText(
-                S.sharePlanBody,
+              AppText(
+                nutritionist ? S.nutriCodeBody : S.sharePlanBody,
                 tone: TextTone.secondary,
                 textAlign: TextAlign.center,
               ),

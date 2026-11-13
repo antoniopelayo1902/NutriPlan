@@ -141,6 +141,11 @@ class _ActivityFormScreenState extends State<ActivityFormScreen> {
                 label: S.minutesLabel,
                 keyboardType: TextInputType.number,
                 errorText: _minutesError,
+                onChanged: (String _) {
+                  if (_minutesError != null) {
+                    setState(() => _minutesError = null);
+                  }
+                },
               ),
               const Eyebrow(S.sessionDayLabel),
               Wrap(

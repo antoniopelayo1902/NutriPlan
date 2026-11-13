@@ -20,11 +20,21 @@ class PageFrame extends StatelessWidget {
     required this.eyebrow,
     required this.title,
     required this.children,
+    this.showBack = true,
+    this.trailing,
+    this.onRefresh,
   });
 
   final String eyebrow;
   final String title;
   final List<Widget> children;
+
+  /// False en la primera pantalla (no hay a dónde regresar).
+  final bool showBack;
+  final Widget? trailing;
+
+  /// Si llega, jalar hacia abajo recarga la pantalla (swipe down).
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +46,17 @@ class PageFrame extends StatelessWidget {
         child: SafeArea(
           child: Stack(
             children: <Widget>[
-              Positioned.fill(child: _scroll(context, t)),
+              Positioned.fill(
+                child: onRefresh == null
+                    ? _scroll(context, t)
+                    : RefreshIndicator(
+                        key: const Key('refreshIndicator'),
+                        color: t.colors.accent,
+                        backgroundColor: t.colors.bgSurface,
+                        onRefresh: onRefresh!,
+                        child: _scroll(context, t),
+                      ),
+              ),
               Positioned(
                 left: t.space.s5,
                 right: t.space.s5,
@@ -52,27 +72,29 @@ class PageFrame extends StatelessWidget {
 
   Widget _scroll(BuildContext context, AppTokens t) {
     return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.fromLTRB(
         t.space.s5,
-        t.space.s2,
+        showBack ? t.space.s2 : t.space.s4,
         t.space.s5,
         t.space.s8,
       ),
       child: AppStack(
         gap: t.space.s5,
         children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: AppIconButton(
-              key: const Key('backButton'),
-              icon: AppIconName.chevronLeft,
-              variant: IconButtonVariant.outline,
-              semanticLabel: S.back,
-              // Navigator.pop regresa a la pantalla anterior.
-              onPressed: () => Navigator.pop(context),
+          if (showBack)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: AppIconButton(
+                key: const Key('backButton'),
+                icon: AppIconName.chevronLeft,
+                variant: IconButtonVariant.outline,
+                semanticLabel: S.back,
+                // Navigator.pop regresa a la pantalla anterior.
+                onPressed: () => Navigator.pop(context),
+              ),
             ),
-          ),
-          ScreenHeader(eyebrow: eyebrow, title: title),
+          ScreenHeader(eyebrow: eyebrow, title: title, trailing: trailing),
           ...children,
         ],
       ),
