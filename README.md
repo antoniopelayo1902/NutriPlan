@@ -1,9 +1,10 @@
 # NutriPlan
 
 App móvil en Flutter para llevar un plan de alimentación por equivalentes. La
-nutrióloga arma el plan de su paciente y lo comparte con un código QR. El
-paciente lo importa y ve qué le toca comer cada día, marca lo que ya comió,
-cambia platillos por otros equivalentes y sigue su progreso.
+nutrióloga ve a sus pacientes, registra sus medidas y ajusta las porciones de
+su plan. El paciente ve qué le toca comer cada día, marca lo que ya comió,
+cambia platillos por otros equivalentes, registra su actividad y sigue su
+progreso. Toda la información vive en Firebase.
 
 Proyecto para la materia de Desarrollo de Aplicaciones Móviles, ITESO.
 
@@ -14,47 +15,92 @@ Proyecto para la materia de Desarrollo de Aplicaciones Móviles, ITESO.
 
 ## Qué hace la app
 
-Al iniciar sesión eliges si entras como paciente o como nutrióloga.
+Al crear tu cuenta (con correo o con Google) eliges si eres paciente o
+nutrióloga.
 
 **Paciente** (barra de navegación inferior con 5 secciones):
 
 - **Semana:** las comidas de cada día. Puedes cambiar de día y marcar lo que ya comiste.
-- **Hoy:** cuántas porciones llevas de cada grupo de alimentos.
-- **Cambiar:** cambia un platillo por otro con los mismos equivalentes.
-- **Actividad:** registro de ejercicio con los minutos de la semana.
-- **Progreso:** evolución por semana y mes con mes, con filtros por peso, % de grasa y masa muscular.
+- **Hoy:** cuántas porciones llevas de cada grupo de alimentos y tu siguiente comida.
+- **Cambiar:** cambia un platillo por otro equivalente; la app avisa si cabe, si hay que ajustar o si no cabe.
+- **Movimiento:** registro de actividad. Se pueden crear, editar y eliminar sesiones.
+- **Progreso:** adherencia de la semana, racha y medidas mes con mes.
 
-Desde el menú lateral se entra a Mi perfil, Ajustes (con modo oscuro), Importar plan y Cerrar sesión.
+Al tocar tu círculo de iniciales entras a **Mi perfil**: foto desde la
+galería, nombre, tu nutrióloga, cerrar sesión, eliminar cuenta y el código QR.
 
 **Nutrióloga:**
 
-- Lista de pacientes.
-- Medidas, IMC e historial de cada paciente.
-- Ajuste de porciones por grupo, con las calorías recalculadas al momento.
-- Publicar el plan como código QR o como texto para copiar.
+- Lista de pacientes vinculados.
+- Por paciente: medidas (crear, editar y eliminar), historial con gráficas y
+  porciones diarias por grupo, con las calorías recalculadas y botón para
+  publicar el plan.
+- Su código QR para que los pacientes se vinculen con ella.
+
+En todas las listas se puede jalar hacia abajo para recargar desde Firebase.
+
+## Factor WOW: códigos QR
+
+- La nutrióloga muestra su QR y el paciente lo escanea con la cámara para
+  vincularse con ella.
+- Un paciente puede compartir su plan con un QR y otro paciente lo importa.
+- En el simulador, que no tiene cámara, el código también se puede copiar y
+  pegar.
+
+## Tecnologías
+
+- Flutter y Dart
+- Firebase Authentication (correo y Google)
+- Cloud Firestore
+- Firebase Cloud Messaging (token del dispositivo)
 
 ## Paquetes
 
 | Paquete | Para qué se usa |
 |---|---|
-| `provider` | Modo oscuro y estado del plan compartido entre pantallas |
-| `google_fonts` | Tipografías |
-| `qr_flutter` | Generar el QR del plan |
+| `firebase_core` | Conectar la app con Firebase |
+| `firebase_auth` | Login con correo y contraseña |
+| `google_sign_in` | Login con Google |
+| `cloud_firestore` | Base de datos |
+| `firebase_messaging` | Permiso de notificaciones y token del dispositivo |
+| `provider` | Compartir el estado entre pantallas |
+| `image_picker` | Elegir la foto de perfil de la galería |
+| `path_provider` | Guardar la foto de perfil en el teléfono |
+| `qr_flutter` | Dibujar los códigos QR |
+| `mobile_scanner` | Escanear códigos QR con la cámara |
 | `flutter_launcher_icons` | Ícono de la app |
+
+## Base de datos (Firestore)
+
+```
+users/{uid}                 perfil, rol (patient o nutritionist), token
+users/{uid}/plan/current    porciones diarias y meta de actividad
+users/{uid}/days/{fecha}    comidas de cada día
+users/{uid}/activityLogs    sesiones de actividad
+users/{uid}/measurements    medidas de cada consulta
+nutritionists/{id}          nombre de cada nutrióloga
+options                     platillos equivalentes por tiempo de comida
+```
+
+Una cuenta de paciente nueva recibe un plan de ejemplo para empezar.
 
 ## Estructura
 
 ```
 app/lib/
-  data/       datos de ejemplo
-  models/     clases de datos
-  providers/  estado de la app
-  screens/    pantallas
-  theme/      colores y estilos de texto
-  widgets/    componentes reutilizables
+  application/  controllers (estado con ChangeNotifier)
+  core/         textos, formatos y utilidades
+  data/         Firebase, Firestore y servicios
+  domain/       modelos y reglas del plan
+  theme/        colores, tipografía y medidas
+  ui/           pantallas y componentes
 ```
 
 ## Cómo correrla
+
+1. En la consola de Firebase del proyecto, crea **Firestore Database** en
+   modo de prueba.
+2. Corre la app:
 
 ```bash
 cd app
@@ -66,8 +112,9 @@ Probada en el simulador de iOS (iPhone 17 Pro).
 
 ## Estado
 
-Entrega 1: pantallas y navegación completas, con datos de ejemplo. Los botones
-que todavía no tienen funcionalidad muestran un aviso de lo que harán.
+Entrega 2: la información viene de Firebase, el login guarda al usuario y su
+token, hay CRUD de sesiones y de medidas, foto de perfil, recarga de listas
+jalando hacia abajo, cuentas de paciente y nutrióloga, y el Factor WOW con QR.
 
 ## Documentación de diseño
 
