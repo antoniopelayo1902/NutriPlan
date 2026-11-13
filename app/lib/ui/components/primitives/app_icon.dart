@@ -17,6 +17,14 @@ enum AppIconName {
   chevronLeft,
   arrowRight,
   info,
+  add,
+  remove,
+  edit,
+  delete,
+  camera,
+  image,
+  qr,
+  logout,
 }
 
 enum AppIconSize { sm, md }
@@ -45,6 +53,22 @@ IconData _iconData(AppIconName n) {
       return Icons.arrow_forward_rounded;
     case AppIconName.info:
       return Icons.info_outline_rounded;
+    case AppIconName.add:
+      return Icons.add_rounded;
+    case AppIconName.remove:
+      return Icons.remove_rounded;
+    case AppIconName.edit:
+      return Icons.edit_outlined;
+    case AppIconName.delete:
+      return Icons.delete_outline_rounded;
+    case AppIconName.camera:
+      return Icons.photo_camera_outlined;
+    case AppIconName.image:
+      return Icons.photo_library_outlined;
+    case AppIconName.qr:
+      return Icons.qr_code_2_rounded;
+    case AppIconName.logout:
+      return Icons.logout_rounded;
   }
 }
 

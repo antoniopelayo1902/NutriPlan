@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../core/i18n/strings_es_mx.dart';
 import '../../../data/auth_service.dart';
+import '../../../domain/models/user_role.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../../components/actions/app_button.dart';
+import '../../components/actions/segmented_control.dart';
 import '../../components/data_display/screen_header.dart';
 import '../../components/primitives/app_card.dart';
 import '../../components/primitives/app_stack.dart';
@@ -22,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _loading = false;
+  UserRole _role = UserRole.patient;
   String? _error;
   String? _info;
 
@@ -47,6 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
   /// On success AuthGate swaps this screen for the app.
   Future<void> _run(Future<void> Function() action) async {
     FocusScope.of(context).unfocus();
+    // El rol solo se usa si Firebase crea una cuenta nueva.
+    AuthService.pendingRole = _role;
     setState(() {
       _loading = true;
       _error = null;
@@ -146,6 +151,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       const AppText(
                         S.loginCardTitle,
                         variant: TextVariant.titleMd,
+                      ),
+                      SegmentedControl<UserRole>(
+                        key: const Key('roleSelector'),
+                        fullWidth: true,
+                        value: _role,
+                        onChanged: (UserRole r) => setState(() => _role = r),
+                        options: const <SegmentOption<UserRole>>[
+                          SegmentOption<UserRole>(
+                            UserRole.patient,
+                            S.rolePatient,
+                          ),
+                          SegmentOption<UserRole>(
+                            UserRole.nutritionist,
+                            S.roleNutritionist,
+                          ),
+                        ],
+                      ),
+                      const AppText(
+                        S.roleHint,
+                        variant: TextVariant.caption,
+                        tone: TextTone.muted,
                       ),
                       TextField(
                         key: const Key('emailField'),

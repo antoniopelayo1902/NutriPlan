@@ -2,11 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../core/i18n/strings_es_mx.dart';
+import '../domain/models/user_role.dart';
 
 /// Every Firebase Authentication call of the app. Screens only call these
 /// and show [errorMessage] when one fails.
 abstract final class AuthService {
   static FirebaseAuth get _auth => FirebaseAuth.instance;
+
+  /// Rol elegido en el login; se usa solo si la cuenta es nueva.
+  static UserRole pendingRole = UserRole.patient;
 
   /// Emits the signed-in user, or null after signing out.
   static Stream<User?> authStateChanges() => _auth.authStateChanges();

@@ -3,6 +3,7 @@ import '../core/flags.dart';
 import 'activity_controller.dart';
 import 'plan_controller.dart';
 import 'profile_controller.dart';
+import 'profile_photo_controller.dart';
 import 'progress_controller.dart';
 import 'shell_controller.dart';
 import 'toast_controller.dart';
@@ -17,8 +18,9 @@ class AppControllers {
     required this.profile,
     required this.toast,
     required this.clock,
+    ProfilePhotoController? photo,
     this.flags = const Flags(),
-  });
+  }) : photo = photo ?? ProfilePhotoController.none();
 
   final ShellController shell;
   final PlanController plan;
@@ -26,6 +28,7 @@ class AppControllers {
   final ProgressController progress;
   final ProfileController profile;
   final ToastController toast;
+  final ProfilePhotoController photo;
   final Clock clock;
   final Flags flags;
 
@@ -36,6 +39,17 @@ class AppControllers {
       plan.load(),
       activity.load(),
       progress.load(),
+      photo.load(),
+    ]);
+  }
+
+  /// Swipe down en cualquier pestaña: vuelve a leer todo de la base de datos.
+  Future<void> refreshAll() async {
+    await Future.wait(<Future<void>>[
+      profile.load(),
+      plan.refresh(),
+      activity.refresh(),
+      progress.refresh(),
     ]);
   }
 
@@ -46,5 +60,6 @@ class AppControllers {
     progress.dispose();
     profile.dispose();
     toast.dispose();
+    photo.dispose();
   }
 }

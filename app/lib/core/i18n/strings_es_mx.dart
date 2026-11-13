@@ -287,4 +287,171 @@ abstract final class S {
       'Demasiados intentos. Espera un momento.';
   static const String authGoogleFailed = 'No se pudo entrar con Google.';
   static const String authUnknown = 'Ocurrió un error. Intenta de nuevo.';
+
+  // Sesión (después del login)
+  static const String loadingAccount = 'Preparando tu plan…';
+  static const String accountErrorTitle = 'No pudimos cargar tus datos';
+  static const String accountErrorBody =
+      'Revisa tu conexión a internet e intenta de nuevo.';
+  static const String back = 'Regresar';
+  static const String cancel = 'Cancelar';
+  static const String save = 'Guardar';
+  static const String delete = 'Eliminar';
+
+  // Perfil
+  static const String openProfile = 'Abrir mi perfil';
+  static const String profileEyebrow = 'Tu cuenta';
+  static const String profileTitle = 'Mi perfil';
+  static const String changePhoto = 'Cambiar foto';
+  static const String photoUpdated = 'Foto de perfil actualizada';
+  static const String photoFailed = 'No se pudo abrir la galería.';
+  static const String nameLabel = 'Nombre';
+  static const String saveName = 'Guardar nombre';
+  static const String nameSaved = 'Nombre guardado';
+  static const String nameRequired = 'Escribe tu nombre.';
+  static const String emailLabel = 'Correo';
+  static const String nutritionistLabel = 'Tu nutrióloga';
+  static const String tokenLabel = 'Token del dispositivo';
+  static const String tokenSaved = 'Guardado en Firebase';
+  static const String tokenMissing = 'No disponible en este dispositivo';
+  static const String accountEyebrow = 'Cuenta';
+  static const String deleteAccount = 'Eliminar cuenta';
+  static const String deleteAccountTitle = '¿Eliminar tu cuenta?';
+  static const String deleteAccountBody =
+      'Se borrarán tu plan, tus sesiones y tus medidas. Esta acción no se '
+      'puede deshacer.';
+  static const String deleteAccountRecentLogin =
+      'Por seguridad, cierra sesión, vuelve a entrar y elimina tu cuenta.';
+
+  // Factor WOW: compartir e importar el plan con un QR
+  static const String wowEyebrow = 'Compartir plan';
+  static const String wowBody =
+      'Comparte tu plan con un código QR o importa el de otra persona.';
+  static const String sharePlan = 'Mi código QR';
+  static const String sharePlanTitle = 'Mi código';
+  static const String sharePlanBody =
+      'Muestra este código para que otra persona importe tu plan de la '
+      'semana.';
+  static const String copyCode = 'Copiar código';
+  static const String codeCopied = 'Código copiado';
+  static const String scanPlan = 'Importar plan con QR';
+  static const String scanTitle = 'Escanear código';
+  static const String scanBody =
+      'Apunta la cámara al código QR de otro plan o elige una foto del '
+      'código.';
+  static const String cameraUnavailable =
+      'La cámara no está disponible en este dispositivo. Elige una imagen '
+      'de la galería.';
+  static const String pickQrImage = 'Elegir imagen de la galería';
+  static const String pasteCode = 'Pegar código copiado';
+  static const String scanHint = 'Apunta aquí al código QR';
+  static const String clipboardEmpty = 'No hay un código copiado.';
+  static const String invalidCode = 'Ese código no es de NutriPlan.';
+  static const String noCodeFound = 'No se encontró un código en la imagen.';
+  static const String galleryScanUnavailable =
+      'Leer el QR de una foto solo funciona en un teléfono. Usa «Pegar '
+      'código copiado».';
+  static const String ownCode = 'Ese es tu propio código.';
+  static const String importTitle = '¿Importar este plan?';
+  static const String importBody =
+      'Tu plan de esta semana se reemplazará por el del código.';
+  static const String importAction = 'Importar';
+  static const String planImported = 'Plan importado';
+  static const String importFailed = 'No se pudo importar el plan.';
+
+  // Movimiento: crear, editar y eliminar sesiones
+  static const String addSession = 'Agregar sesión';
+  static const String newSession = 'Nueva sesión';
+  static const String editSession = 'Editar sesión';
+  static const String activityTypeLabel = 'Tipo de actividad';
+  static const String minutesLabel = 'Minutos';
+  static const String sessionDayLabel = 'Día';
+  static const String minutesInvalid = 'Escribe entre 1 y 600 minutos.';
+  static const String sessionSaved = 'Sesión guardada';
+  static const String sessionUpdated = 'Sesión actualizada';
+  static const String deleteSessionTitle = '¿Eliminar esta sesión?';
+  static String deleteSessionBody(String activity, int minutes) =>
+      'Se borrará la sesión de $activity de $minutes min.';
+  static String dayChip(String initial, int day) => '$initial $day';
+
+  // Tipos de cuenta
+  static const String roleLabel = 'Tipo de cuenta';
+  static const String rolePatient = 'Paciente';
+  static const String roleNutritionist = 'Nutrióloga';
+  static const String roleHint = 'Se usa al crear tu cuenta.';
+
+  // Vincular paciente con nutrióloga
+  static const String nutriCodeTitle = 'Mi código';
+  static const String nutriWowEyebrow = 'Vincular pacientes';
+  static const String nutriCodeBody =
+      'Tus pacientes escanean este código para vincularse contigo.';
+  static const String nutriWowBody =
+      'Comparte tu código QR para que tus pacientes se vinculen contigo.';
+  static const String scanAny = 'Escanear código QR';
+  static const String scanBodyAny =
+      'Escanea el código de tu nutrióloga para vincularte, o el de otro '
+      'paciente para importar su plan.';
+  static String linkTitle(String name) => '¿Vincularte con $name?';
+  static const String linkBody =
+      'Tu nutrióloga podrá ver tu información, registrar tus medidas y '
+      'ajustar tu plan.';
+  static const String linkAction = 'Vincular';
+  static String linked(String name) => 'Te vinculaste con $name';
+  static const String alreadyLinked = 'Ya estás vinculada con esa nutrióloga.';
+  static const String linkFailed = 'No se pudo vincular.';
+
+  // Nutrióloga: pacientes
+  static const String nutriEyebrow = 'Consultorio';
+  static const String patientsTitle = 'Mis pacientes';
+  static const String patientsEmptyTitle = 'Aún no tienes pacientes';
+  static const String patientsEmptyBody =
+      'Comparte tu código QR desde tu perfil para que se vinculen contigo.';
+  static const String shareMyCode = 'Compartir mi código';
+  static String patientCount(int n) => n == 1 ? '1 paciente' : '$n pacientes';
+  static const String unlinkPatient = 'Desvincular paciente';
+  static String unlinkTitle(String name) => '¿Desvincular a $name?';
+  static const String unlinkBody =
+      'Ya no aparecerá en tu lista. Sus datos no se borran.';
+  static const String unlinkAction = 'Desvincular';
+  static const String patientUnlinked = 'Paciente desvinculado';
+
+  // Nutrióloga: detalle del paciente
+  static const String patientEyebrow = 'Paciente';
+  static const String tabMeasures = 'Medidas';
+  static const String tabHistory = 'Historial';
+  static const String tabPortions = 'Porciones';
+  static const String addMeasurement = 'Agregar medida';
+  static const String newMeasurement = 'Nueva medida';
+  static const String editMeasurement = 'Editar medida';
+  static const String deleteMeasurement = 'Eliminar medida';
+  static String deleteMeasurementTitle(String date) =>
+      '¿Eliminar la medida del $date?';
+  static const String deleteMeasurementBody =
+      'Tu paciente dejará de verla en su progreso.';
+  static const String measurementSaved = 'Medida guardada';
+  static const String measurementUpdated = 'Medida actualizada';
+  static const String measurementDeleted = 'Medida eliminada';
+  static String measurementSummary(String weight, String fat, String muscle) =>
+      '$weight · $fat grasa · $muscle músculo';
+  static const String fieldWeight = 'Peso (kg)';
+  static const String fieldHeight = 'Talla (m)';
+  static const String fieldBodyFat = 'Grasa corporal (%)';
+  static const String fieldMuscle = 'Masa muscular (kg)';
+  static const String fieldWaist = 'Cintura (cm, opcional)';
+  static const String fieldHip = 'Cadera (cm, opcional)';
+  static const String fieldTricipital = 'Pliegue tricipital (mm, opcional)';
+  static const String fieldInvalid = 'Escribe un número mayor a 0.';
+  static const String measurementDateLabel = 'Fecha';
+  static String bmiLabel(String bmi) => 'IMC $bmi';
+  static String fullDate(String dayMonth, int year) => '$dayMonth de $year';
+  static const String portionsBody =
+      'Porciones diarias por grupo. No pueden bajar de lo que piden las '
+      'comidas del plan. Al publicar, tu paciente ve el cambio al refrescar.';
+  static String portionsKcal(String kcal) => '$kcal kcal al día';
+  static const String publishPlan = 'Publicar plan';
+  static const String planPublished = 'Plan publicado';
+  static const String noPatientPlan = 'Este paciente todavía no tiene plan.';
+  static String increase(String group) => 'Subir $group';
+  static String portionMinimum(String n) => 'Mínimo $n por las comidas';
+  static String decrease(String group) => 'Bajar $group';
 }

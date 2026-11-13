@@ -115,6 +115,9 @@ class AppSizing {
   final double iconSm = 16;
   final double iconMd = 20;
   final double avatarMd = 38;
+  final double avatarLg = 104;
+  final double qrSize = 220;
+  final double scannerHeight = 300;
   final double stepperBtn = 32;
   final double buttonMd = 48;
   final double buttonLg = 48;

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../../data/auth_service.dart';
 import 'login_screen.dart';
+import 'session_root.dart';
 
 /// Shows [LoginScreen] until Firebase reports a signed-in user, then [child].
 class AuthGate extends StatelessWidget {
@@ -16,11 +17,24 @@ class AuthGate extends StatelessWidget {
       stream: AuthService.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         final User? user = snapshot.data;
-        if (user == null) return const LoginScreen();
+        // El login va en su propio Overlay porque aquí todavía no hay Navigator.
+        if (user == null) {
+          return Overlay(
+            initialEntries: <OverlayEntry>[
+              OverlayEntry(builder: (BuildContext _) => const LoginScreen()),
+            ],
+          );
+        }
         return AuthScope(
+          uid: user.uid,
           email: user.email ?? '',
           signOut: AuthService.signOut,
-          child: child,
+          // Un usuario nuevo arma su sesión desde cero.
+          child: SessionRoot(
+            key: ValueKey<String>(user.uid),
+            user: user,
+            child: child,
+          ),
         );
       },
     );
@@ -32,11 +46,13 @@ class AuthGate extends StatelessWidget {
 class AuthScope extends InheritedWidget {
   const AuthScope({
     super.key,
+    required this.uid,
     required this.email,
     required this.signOut,
     required super.child,
   });
 
+  final String uid;
   final String email;
   final Future<void> Function() signOut;
 
@@ -44,5 +60,6 @@ class AuthScope extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<AuthScope>();
 
   @override
-  bool updateShouldNotify(AuthScope oldWidget) => email != oldWidget.email;
+  bool updateShouldNotify(AuthScope oldWidget) =>
+      email != oldWidget.email || uid != oldWidget.uid;
 }

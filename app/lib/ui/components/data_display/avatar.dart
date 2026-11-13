@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 
 import '../../../theme/tokens.dart';
@@ -13,7 +15,11 @@ class Avatar extends StatelessWidget {
     this.size,
     this.tone = AvatarTone.accent,
     this.semanticLabel,
+    this.photoPath,
   });
+
+  /// Foto de perfil guardada en el teléfono; si es null se ven las iniciales.
+  final String? photoPath;
 
   final String initials;
 
@@ -45,13 +51,30 @@ class Avatar extends StatelessWidget {
       child: ExcludeSemantics(
         excluding: semanticLabel != null,
         child: DecoratedBox(
-          decoration: BoxDecoration(color: fill, shape: BoxShape.circle),
+          decoration: BoxDecoration(
+            color: fill,
+            shape: BoxShape.circle,
+            image: photoPath == null
+                ? null
+                : DecorationImage(
+                    image: FileImage(File(photoPath!)),
+                    fit: BoxFit.cover,
+                  ),
+          ),
           child: SizedBox(
             width: dim,
             height: dim,
-            child: Center(
-              child: AppText(initials, variant: TextVariant.label, tone: text),
-            ),
+            child: photoPath != null
+                ? null
+                : Center(
+                    child: AppText(
+                      initials,
+                      variant: dim > t.size.avatarMd
+                          ? TextVariant.titleLg
+                          : TextVariant.label,
+                      tone: text,
+                    ),
+                  ),
           ),
         ),
       ),

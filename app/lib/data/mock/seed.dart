@@ -77,6 +77,9 @@ class SeedData {
     }),
   };
 
+  /// Porciones originales de un tiempo de comida.
+  static Portions slotPortions(MealSlot slot) => _slotPortions[slot]!;
+
   static const Map<MealSlot, String> _times = <MealSlot, String>{
     MealSlot.desayuno: '08:00',
     MealSlot.colacion: '11:00',

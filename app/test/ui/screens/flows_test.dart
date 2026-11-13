@@ -14,7 +14,6 @@ import 'package:nutriplan/data/mock/seed.dart';
 import 'package:nutriplan/domain/models/food_group.dart';
 import 'package:nutriplan/domain/models/plan.dart';
 import 'package:nutriplan/theme/accent_controller.dart';
-import 'package:nutriplan/ui/components/actions/app_icon_button.dart';
 import 'package:nutriplan/ui/shell/app_shell.dart';
 import 'package:nutriplan/ui/components/data_display/progress_bar.dart';
 import 'package:nutriplan/ui/components/domain/app_tab_bar.dart';
@@ -273,8 +272,12 @@ void main() {
     expect(c.activity.summary!.goalMet, isTrue);
     final bar = tester.widget<ProgressBar>(find.byType(ProgressBar));
     expect(bar.tone, BarTone.success);
-    await tester.ensureVisible(find.byType(AppIconButton).first);
-    await tester.tap(find.byType(AppIconButton).first);
+    final remove = find.byKey(const Key('remove-log-1'));
+    await tester.ensureVisible(remove);
+    await tester.tap(remove);
+    await tester.pumpAndSettle();
+    // Delete asks for confirmation first.
+    await tester.tap(find.byKey(const Key('dialogConfirm')));
     await tester.pump(const Duration(seconds: 5));
     expect(c.activity.summary!.sessions, 4);
     expect(find.text('Sesión eliminada.'), findsOneWidget);

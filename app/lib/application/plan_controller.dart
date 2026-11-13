@@ -68,9 +68,10 @@ class PlanController extends ChangeNotifier {
   List<Achievement> get earned =>
       _plan == null ? const <Achievement>[] : achievements(_plan!, today);
 
-  Future<void> load() async {
+  /// [silent] vuelve a leer sin mostrar el esqueleto de carga (refresh).
+  Future<void> load({bool silent = false}) async {
     final int generation = ++_loadGeneration;
-    _loading = true;
+    if (!silent) _loading = true;
     _error = null;
     notifyListeners();
     Plan? loaded;
@@ -91,7 +92,8 @@ class PlanController extends ChangeNotifier {
     if (generation != _loadGeneration) return;
     if (failure != null) {
       _error = failure;
-      _plan = null;
+      // Si falla un refresh se queda el plan que ya se veía.
+      if (!silent) _plan = null;
     } else {
       _plan = loaded;
       _options = opts;
@@ -101,6 +103,8 @@ class PlanController extends ChangeNotifier {
   }
 
   Future<void> retry() => load();
+
+  Future<void> refresh() => load(silent: true);
 
   /// Traffic-light result for [option] on the meal [mealId] of [date].
   FitResult? fitFor(DateTime date, String mealId, EquivalentOption option) {
