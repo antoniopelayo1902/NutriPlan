@@ -445,12 +445,13 @@ abstract final class S {
   static String bmiLabel(String bmi) => 'IMC $bmi';
   static String fullDate(String dayMonth, int year) => '$dayMonth de $year';
   static const String portionsBody =
-      'Porciones diarias por grupo. Al publicar, tu paciente ve el plan '
-      'nuevo al refrescar.';
+      'Porciones diarias por grupo. No pueden bajar de lo que piden las '
+      'comidas del plan. Al publicar, tu paciente ve el cambio al refrescar.';
   static String portionsKcal(String kcal) => '$kcal kcal al día';
   static const String publishPlan = 'Publicar plan';
   static const String planPublished = 'Plan publicado';
   static const String noPatientPlan = 'Este paciente todavía no tiene plan.';
   static String increase(String group) => 'Subir $group';
+  static String portionMinimum(String n) => 'Mínimo $n por las comidas';
   static String decrease(String group) => 'Bajar $group';
 }

@@ -54,6 +54,7 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
   MeasurementMetric _metric = MeasurementMetric.weight;
 
   Portions? _targets;
+  Portions _minimums = Portions.zero;
   bool _targetsLoading = true;
   bool _publishing = false;
 
@@ -77,7 +78,13 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
   Future<void> _loadTargets() async {
     try {
       final Portions? targets = await NutritionistService.loadTargets(_uid);
-      if (mounted) setState(() => _targets = targets);
+      final Portions minimums = await NutritionistService.loadMinimums(_uid);
+      if (mounted) {
+        setState(() {
+          _targets = targets;
+          _minimums = minimums;
+        });
+      }
     } catch (_) {
       if (mounted) setState(() => _targets = null);
     } finally {
@@ -121,10 +128,13 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
     }
   }
 
-  /// Sube o baja media porción de un grupo (entre 0 y 20).
+  /// Sube o baja media porción de un grupo (entre el mínimo y 20).
   void _step(FoodGroup g, double delta) {
     final Portions current = _targets!;
-    final double next = (current[g] + delta).clamp(0, Portions.maxPerGroup);
+    final double next = (current[g] + delta).clamp(
+      _minimums[g],
+      Portions.maxPerGroup,
+    );
     setState(() => _targets = current.withGroup(g, next));
   }
 
@@ -363,6 +373,9 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
         ),
       ),
       title: label,
+      subtitle: _minimums[g] > 0
+          ? S.portionMinimum(formatPortion(_minimums[g]))
+          : null,
       trailing: AppStack(
         direction: Axis.horizontal,
         gap: t.space.s2,
@@ -374,7 +387,7 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
             size: IconButtonSize.sm,
             variant: IconButtonVariant.outline,
             semanticLabel: S.decrease(label),
-            onPressed: value <= 0 ? null : () => _step(g, -0.5),
+            onPressed: value <= _minimums[g] ? null : () => _step(g, -0.5),
           ),
           SizedBox(
             width: t.space.s7,

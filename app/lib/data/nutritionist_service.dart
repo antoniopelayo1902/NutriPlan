@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../domain/errors.dart';
+import '../domain/models/food_group.dart';
 import '../domain/models/patient_summary.dart';
+import '../domain/models/plan.dart';
 import '../domain/models/portions.dart';
 import '../domain/models/user_role.dart';
 import 'firestore/firestore_mappers.dart';
@@ -78,6 +80,26 @@ abstract final class NutritionistService {
         await FirestorePaths.plan(patientUid).get();
     if (!plan.exists) return null;
     return FirestoreMappers.portionsFromMap(plan.data()!['dailyTargets']);
+  }
+
+  /// Mínimo por grupo: lo que piden las comidas del día más cargado, para
+  /// que las porciones diarias nunca queden por debajo del plan.
+  static Future<Portions> loadMinimums(String patientUid) async {
+    final QuerySnapshot<Map<String, dynamic>> days = await FirestorePaths.days(
+      patientUid,
+    ).get();
+    final Map<FoodGroup, double> max = <FoodGroup, double>{};
+    for (final QueryDocumentSnapshot<Map<String, dynamic>> d in days.docs) {
+      final DayPlan day = FirestoreMappers.dayFromMap(d.data());
+      Portions total = Portions.zero;
+      for (final Meal m in day.meals) {
+        total = total + m.portions;
+      }
+      for (final FoodGroup g in FoodGroup.values) {
+        if (total[g] > (max[g] ?? 0)) max[g] = total[g];
+      }
+    }
+    return Portions(max);
   }
 
   /// Publica las porciones nuevas en el plan del paciente.
