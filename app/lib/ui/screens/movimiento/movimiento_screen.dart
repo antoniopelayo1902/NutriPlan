@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../../application/app_controllers.dart';
 import '../../../core/format/es_mx_format.dart';
@@ -7,8 +7,10 @@ import '../../../domain/models/activity.dart';
 import '../../../domain/services/activity_summary.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
+import '../../components/actions/app_button.dart';
 import '../../components/actions/app_icon_button.dart';
 import '../../components/data_display/callout.dart';
+import '../../components/data_display/confirm_dialog.dart';
 import '../../components/data_display/empty_state.dart';
 import '../../components/data_display/eyebrow.dart';
 import '../../components/data_display/list_item.dart';
@@ -21,6 +23,7 @@ import '../../components/primitives/app_stack.dart';
 import '../../components/primitives/app_text.dart';
 import '../async_gate.dart';
 import '../screen_frame.dart';
+import 'activity_form_screen.dart';
 
 class MovimientoScreen extends StatelessWidget {
   const MovimientoScreen({super.key, required this.controllers});
@@ -49,9 +52,30 @@ class MovimientoScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _remove(String id) async {
-    final bool ok = await controllers.activity.remove(id);
+  /// Delete del CRUD: primero una alerta para confirmar.
+  Future<void> _remove(BuildContext context, ActivityLog log) async {
+    final bool sure = await showConfirmDialog(
+      context,
+      title: S.deleteSessionTitle,
+      body: S.deleteSessionBody(
+        S.activityNames[log.kind.name]!.toLowerCase(),
+        log.minutes,
+      ),
+      confirmLabel: S.delete,
+    );
+    if (!sure) return;
+    final bool ok = await controllers.activity.remove(log.id);
     controllers.toast.show(ok ? S.toastLogRemoved : S.actionFailed);
+  }
+
+  /// Abre el formulario: vacío para crear, con datos para editar.
+  void _openForm(BuildContext context, [ActivityLog? log]) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext _) => ActivityFormScreen(log: log),
+      ),
+    );
   }
 
   @override
@@ -97,7 +121,7 @@ class MovimientoScreen extends StatelessWidget {
                           ),
                       ],
                     ),
-                    _sessions(t, summary, goal),
+                    _sessions(context, t, summary, goal),
                     Callout(
                       S.activityGoalFooter(
                         controllers.profile.nutritionist?.name ?? '',
@@ -116,13 +140,26 @@ class MovimientoScreen extends StatelessWidget {
     );
   }
 
-  Widget _sessions(AppTokens t, ActivitySummary summary, ActivityGoal goal) {
+  Widget _sessions(
+    BuildContext context,
+    AppTokens t,
+    ActivitySummary summary,
+    ActivityGoal goal,
+  ) {
     return AppCard(
       padding: t.space.s5,
       child: AppStack(
         gap: t.space.s2,
         children: <Widget>[
           const Eyebrow(S.sessionsEyebrow),
+          AppButton(
+            key: const Key('addSessionButton'),
+            label: S.addSession,
+            iconLeft: AppIconName.add,
+            variant: ButtonVariant.outlineAccent,
+            fullWidth: true,
+            onPressed: () => _openForm(context),
+          ),
           if (summary.logs.isEmpty)
             const EmptyState(title: S.activityEmpty, body: S.activityEmptyBody)
           else
@@ -153,10 +190,18 @@ class MovimientoScreen extends StatelessWidget {
                       variant: TextVariant.label,
                     ),
                     AppIconButton(
-                      icon: AppIconName.close,
+                      key: Key('edit-${summary.logs[i].id}'),
+                      icon: AppIconName.edit,
+                      size: IconButtonSize.sm,
+                      semanticLabel: S.editSession,
+                      onPressed: () => _openForm(context, summary.logs[i]),
+                    ),
+                    AppIconButton(
+                      key: Key('remove-${summary.logs[i].id}'),
+                      icon: AppIconName.delete,
                       size: IconButtonSize.sm,
                       semanticLabel: S.removeSession,
-                      onPressed: () => _remove(summary.logs[i].id),
+                      onPressed: () => _remove(context, summary.logs[i]),
                     ),
                   ],
                 ),

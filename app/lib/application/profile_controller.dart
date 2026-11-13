@@ -16,6 +16,19 @@ class ProfileController extends ChangeNotifier {
   Nutritionist? get nutritionist => _nutritionist;
   bool get hasError => _error != null;
 
+  /// Cambia el nombre en la base de datos. Regresa false si falla.
+  Future<bool> rename(String name) async {
+    try {
+      await _repository.updateName(name);
+      await load();
+      return !hasError;
+    } catch (e) {
+      _error = e;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<void> load() async {
     try {
       _patient = await _repository.getPatient();

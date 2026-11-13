@@ -9,7 +9,7 @@ class InMemoryPatientRepository implements PatientRepository {
   }) : _patient = patient,
        _nutritionist = nutritionist;
 
-  final Patient _patient;
+  Patient _patient;
   final Nutritionist _nutritionist;
   final Duration latency;
 
@@ -23,5 +23,18 @@ class InMemoryPatientRepository implements PatientRepository {
   Future<Nutritionist> getNutritionist() async {
     await Future<void>.delayed(latency);
     return _nutritionist;
+  }
+
+  @override
+  Future<void> updateName(String name) async {
+    await Future<void>.delayed(latency);
+    _patient = Patient(
+      id: _patient.id,
+      name: name.trim(),
+      birthDate: _patient.birthDate,
+      sex: _patient.sex,
+      objective: _patient.objective,
+      nutritionistId: _patient.nutritionistId,
+    );
   }
 }

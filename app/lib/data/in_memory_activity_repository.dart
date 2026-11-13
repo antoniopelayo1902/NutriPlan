@@ -51,6 +51,25 @@ class InMemoryActivityRepository implements ActivityRepository {
   @override
   Future<void> add(ActivityLog log) async {
     await Future<void>.delayed(latency);
+    _checkWrite(log);
+    if (_logs.any((ActivityLog l) => l.id == log.id)) {
+      throw const DomainValidationError('Duplicate log id');
+    }
+    _logs.add(log);
+  }
+
+  @override
+  Future<void> update(ActivityLog log) async {
+    await Future<void>.delayed(latency);
+    _checkWrite(log);
+    final int i = _logs.indexWhere(
+      (ActivityLog l) => l.id == log.id && l.patientId == ownerPatientId,
+    );
+    if (i < 0) throw const NotFoundError('Log not found');
+    _logs[i] = log;
+  }
+
+  void _checkWrite(ActivityLog log) {
     if (failNextWrite) {
       failNextWrite = false;
       throw const RepositoryError('write failed');
@@ -68,10 +87,6 @@ class InMemoryActivityRepository implements ActivityRepository {
     if (log.kcal != _goal.typeOf(log.kind).kcalFor(log.minutes)) {
       throw const DomainValidationError('kcal does not match the activity');
     }
-    if (_logs.any((ActivityLog l) => l.id == log.id)) {
-      throw const DomainValidationError('Duplicate log id');
-    }
-    _logs.add(log);
   }
 
   @override

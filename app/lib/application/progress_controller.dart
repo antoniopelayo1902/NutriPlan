@@ -24,8 +24,9 @@ class ProgressController extends ChangeNotifier {
   MetricTrend? trend(MeasurementMetric metric) =>
       trendFor(_measurements, metric);
 
-  Future<void> load() async {
-    _loading = true;
+  /// [silent] vuelve a leer sin mostrar el esqueleto de carga (refresh).
+  Future<void> load({bool silent = false}) async {
+    if (!silent) _loading = true;
     _error = null;
     notifyListeners();
     try {
@@ -39,4 +40,6 @@ class ProgressController extends ChangeNotifier {
   }
 
   Future<void> retry() => load();
+
+  Future<void> refresh() => load(silent: true);
 }

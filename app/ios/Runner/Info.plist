@@ -71,6 +71,14 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<!-- URL scheme para que Google regrese a la app despues de iniciar sesion (REVERSED_CLIENT_ID). -->
+	<key>NSCameraUsageDescription</key>
+	<string>NutriPlan usa la cámara para escanear el código QR de un plan.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>NutriPlan usa tus fotos para tu foto de perfil y para leer códigos QR.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

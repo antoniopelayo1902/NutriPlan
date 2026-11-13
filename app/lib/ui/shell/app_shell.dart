@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../application/app_controllers.dart';
 import '../../application/shell_controller.dart';
-import '../../application/toast_controller.dart';
 import '../../core/i18n/strings_es_mx.dart';
 import '../../theme/tokens.dart';
 import '../../theme/tokens_context.dart';
-import '../components/data_display/app_toast.dart';
+import '../components/data_display/toast_host.dart';
 import '../components/domain/app_tab_bar.dart';
 import '../components/primitives/app_icon.dart';
 import '../screens/cambiar/cambiar_screen.dart';
@@ -80,43 +79,13 @@ class AppShell extends StatelessWidget {
                           t.size.tabBarBottom +
                           t.size.tabBarHeight +
                           t.space.s3,
-                      child: _ToastHost(controller: controllers.toast),
+                      child: ToastHost(controller: controllers.toast),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-        );
-      },
-    );
-  }
-}
-
-class _ToastHost extends StatelessWidget {
-  const _ToastHost({required this.controller});
-
-  final ToastController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final AppTokens t = context.tokens;
-    final bool reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (BuildContext context, Widget? _) {
-        final ToastMessage? m = controller.current;
-        return AnimatedSwitcher(
-          duration: reduce ? Duration.zero : t.motion.base,
-          child: m == null
-              ? const SizedBox.shrink(key: ValueKey<int>(0))
-              : Center(
-                  key: ValueKey<int>(m.id),
-                  child: GestureDetector(
-                    onTap: controller.dismiss,
-                    child: AppToast(message: m.text),
-                  ),
-                ),
         );
       },
     );

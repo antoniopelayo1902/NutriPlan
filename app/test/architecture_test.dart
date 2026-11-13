@@ -99,7 +99,7 @@ void main() {
     }
   });
 
-  test('pubspec runtime dependencies are the Flutter SDK packages, cupertino_icons and Firebase Auth', () {
+  test('pubspec runtime dependencies are the expected packages', () {
     final String y = File('pubspec.yaml').readAsStringSync();
     final String deps = y
         .split('dependencies:')[1]
@@ -115,6 +115,13 @@ void main() {
       'firebase_core',
       'firebase_auth',
       'google_sign_in',
+      'cloud_firestore',
+      'firebase_messaging',
+      'provider',
+      'image_picker',
+      'path_provider',
+      'qr_flutter',
+      'mobile_scanner',
     ]);
   });
 
@@ -122,6 +129,7 @@ void main() {
     final String m = File('android/app/src/main/AndroidManifest.xml')
         .readAsStringSync();
     expect(m.contains('android:allowBackup="false"'), isTrue);
-    expect(m.contains('INTERNET'), isFalse);
+    // Firestore needs network access.
+    expect(m.contains('android.permission.INTERNET'), isTrue);
   });
 }

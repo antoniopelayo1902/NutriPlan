@@ -34,8 +34,9 @@ class ActivityController extends ChangeNotifier {
     return g == null ? null : summarizeActivity(_logs, g, _clock());
   }
 
-  Future<void> load() async {
-    _loading = true;
+  /// [silent] vuelve a leer sin mostrar el esqueleto de carga (refresh).
+  Future<void> load({bool silent = false}) async {
+    if (!silent) _loading = true;
     _error = null;
     notifyListeners();
     try {
@@ -50,6 +51,69 @@ class ActivityController extends ChangeNotifier {
   }
 
   Future<void> retry() => load();
+
+  /// Swipe down: vuelve a traer las sesiones de la base de datos.
+  Future<void> refresh() => load(silent: true);
+
+  ActivityLog _build(String id, ActivityKind kind, int minutes, DateTime date) {
+    final ActivityType type = _goal!.typeOf(kind);
+    return ActivityLog(
+      id: id,
+      patientId: patientId,
+      date: dateOnly(date),
+      kind: kind,
+      minutes: minutes,
+      kcal: type.kcalFor(minutes),
+    );
+  }
+
+  /// Create del formulario: sesión con tipo, minutos y día elegidos.
+  Future<ActivityLog?> create(
+    ActivityKind kind,
+    int minutes,
+    DateTime date,
+  ) async {
+    try {
+      final ActivityLog log = _build(
+        'log-${_clock().microsecondsSinceEpoch}-${++_seq}',
+        kind,
+        minutes,
+        date,
+      );
+      await _repository.add(log);
+      _logs = <ActivityLog>[..._logs, log];
+      _error = null;
+      notifyListeners();
+      return log;
+    } catch (e) {
+      _error = e;
+      notifyListeners();
+      return null;
+    }
+  }
+
+  /// Update del formulario: cambia una sesión que ya existe.
+  Future<ActivityLog?> edit(
+    String id,
+    ActivityKind kind,
+    int minutes,
+    DateTime date,
+  ) async {
+    try {
+      final ActivityLog log = _build(id, kind, minutes, date);
+      await _repository.update(log);
+      _logs = <ActivityLog>[
+        for (final ActivityLog l in _logs) l.id == id ? log : l,
+      ];
+      _error = null;
+      notifyListeners();
+      return log;
+    } catch (e) {
+      _error = e;
+      notifyListeners();
+      return null;
+    }
+  }
 
   /// Logs one session of [type] for today with its default duration.
   /// Returns the new log, or null when the action failed.
