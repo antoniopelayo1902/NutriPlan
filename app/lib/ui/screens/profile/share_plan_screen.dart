@@ -16,7 +16,7 @@ import '../login/auth_gate.dart';
 import '../page_frame.dart';
 
 /// Factor WOW (parte 1): el QR con el código del plan del paciente, o el
-/// código de la nutrióloga para vincular pacientes si [nutritionist].
+/// código del nutriólogo para vincular pacientes si [nutritionist].
 class SharePlanScreen extends StatelessWidget {
   const SharePlanScreen({super.key, this.nutritionist = false});
 

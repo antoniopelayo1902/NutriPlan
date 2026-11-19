@@ -25,6 +25,7 @@ enum AppIconName {
   image,
   qr,
   logout,
+  search,
 }
 
 enum AppIconSize { sm, md }
@@ -67,6 +68,8 @@ IconData _iconData(AppIconName n) {
       return Icons.photo_library_outlined;
     case AppIconName.qr:
       return Icons.qr_code_2_rounded;
+    case AppIconName.search:
+      return Icons.search_rounded;
     case AppIconName.logout:
       return Icons.logout_rounded;
   }

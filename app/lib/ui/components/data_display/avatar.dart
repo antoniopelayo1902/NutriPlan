@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 
 import '../../../theme/tokens.dart';
@@ -54,7 +55,7 @@ class Avatar extends StatelessWidget {
           decoration: BoxDecoration(
             color: fill,
             shape: BoxShape.circle,
-            image: photoPath == null
+            image: photoPath == null || kIsWeb
                 ? null
                 : DecorationImage(
                     image: FileImage(File(photoPath!)),

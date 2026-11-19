@@ -11,10 +11,10 @@ abstract final class PlanShareService {
   static const String _prefix = 'nutriplan:plan:';
   static const String _nutriPrefix = 'nutriplan:nutri:';
 
-  /// Código QR de una nutrióloga, para que sus pacientes se vinculen.
+  /// Código QR de un nutriólogo, para que sus pacientes se vinculen.
   static String nutriCodeFor(String uid) => '$_nutriPrefix$uid';
 
-  /// Uid de la nutrióloga dentro de un código, o null si no es de ese tipo.
+  /// Uid del nutriólogo dentro de un código, o null si no es de ese tipo.
   static String? nutriUidFrom(String raw) {
     final String code = raw.trim();
     if (!code.startsWith(_nutriPrefix)) return null;

@@ -45,7 +45,7 @@ class AppProviders extends StatelessWidget {
   }
 }
 
-/// Lo mismo para la cuenta de nutrióloga, que no usa los controllers del
+/// Lo mismo para la cuenta de nutriólogo, que no usa los controllers del
 /// paciente.
 class NutriProviders extends StatelessWidget {
   const NutriProviders({

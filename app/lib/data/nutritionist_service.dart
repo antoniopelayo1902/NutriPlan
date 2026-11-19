@@ -10,9 +10,9 @@ import 'firestore/firestore_mappers.dart';
 import 'firestore/firestore_paths.dart';
 import 'mock/seed.dart';
 
-/// Lecturas y escrituras de Firestore que hace la cuenta de nutrióloga.
+/// Lecturas y escrituras de Firestore que hace la cuenta de nutriólogo.
 abstract final class NutritionistService {
-  /// Nombre de la nutrióloga [uid].
+  /// Nombre del nutriólogo [uid].
   static Future<String> loadName(String uid) async {
     final DocumentSnapshot<Map<String, dynamic>> doc =
         await FirestorePaths.user(uid).get();
@@ -39,7 +39,40 @@ abstract final class NutritionistService {
     return out;
   }
 
-  /// Cambia el nombre en su usuario y en el catálogo de nutriólogas.
+  /// Registro manual: un paciente sin cuenta propia que el nutriólogo
+  /// captura desde la web. Lleva el plan de ejemplo vacío de días y medidas.
+  /// Regresa el uid del documento nuevo.
+  static Future<String> createPatient({
+    required String nutriUid,
+    required String name,
+    String email = '',
+    String objective = '',
+  }) async {
+    if (name.trim().isEmpty) {
+      throw const DomainValidationError('Name is required');
+    }
+    final DocumentReference<Map<String, dynamic>> ref =
+        FirestorePaths.usersCollection().doc();
+    final SeedData seed = SeedData.build(DateTime.now);
+    final WriteBatch batch = FirestorePaths.db.batch();
+    batch.set(ref, <String, dynamic>{
+      'role': UserRole.patient.name,
+      'manual': true,
+      'name': name.trim(),
+      'email': email.trim(),
+      'objective': objective.trim(),
+      'nutritionistId': nutriUid,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+    batch.set(
+      FirestorePaths.plan(ref.id),
+      FirestoreMappers.planToMap(seed.plan),
+    );
+    await batch.commit();
+    return ref.id;
+  }
+
+  /// Cambia el nombre en su usuario y en el catálogo de nutriólogos.
   static Future<void> rename(String uid, String name) async {
     if (name.trim().isEmpty) {
       throw const DomainValidationError('Name is required');
@@ -54,8 +87,8 @@ abstract final class NutritionistService {
     await batch.commit();
   }
 
-  /// El paciente [patientUid] queda vinculado con la nutrióloga [nutriUid].
-  /// Regresa el nombre de la nutrióloga para mostrarlo.
+  /// El paciente [patientUid] queda vinculado con el nutriólogo [nutriUid].
+  /// Regresa el nombre del nutriólogo para mostrarlo.
   static Future<String> link(String patientUid, String nutriUid) async {
     final DocumentSnapshot<Map<String, dynamic>> nutri =
         await FirestorePaths.user(nutriUid).get();
@@ -68,7 +101,7 @@ abstract final class NutritionistService {
     return nutri.data()!['name'] as String;
   }
 
-  /// Quita al paciente de la lista: vuelve a la nutrióloga de ejemplo.
+  /// Quita al paciente de la lista: vuelve al nutriólogo de ejemplo.
   static Future<void> unlink(String patientUid) async {
     await FirestorePaths.user(patientUid)
         .update(<String, dynamic>{'nutritionistId': SeedData.nutritionistId});

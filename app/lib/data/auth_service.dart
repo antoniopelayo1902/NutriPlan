@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../core/i18n/strings_es_mx.dart';
@@ -27,6 +28,19 @@ abstract final class AuthService {
   /// Opens the Google account picker and signs in to Firebase with its token.
   /// Returns false when the user closes the picker without choosing.
   static Future<bool> signInWithGoogle() async {
+    if (kIsWeb) {
+      // The browser uses Firebase's own popup instead of google_sign_in.
+      try {
+        await _auth.signInWithPopup(GoogleAuthProvider());
+        return true;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user' ||
+            e.code == 'cancelled-popup-request') {
+          return false;
+        }
+        rethrow;
+      }
+    }
     try {
       final GoogleSignInAccount account = await GoogleSignIn.instance
           .authenticate();
@@ -43,7 +57,7 @@ abstract final class AuthService {
 
   /// Signs out of Firebase and of Google.
   static Future<void> signOut() async {
-    await GoogleSignIn.instance.signOut();
+    if (!kIsWeb) await GoogleSignIn.instance.signOut();
     await _auth.signOut();
   }
 

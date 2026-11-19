@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-/// Lo que el perfil necesita de cualquier cuenta (paciente o nutrióloga).
+/// Lo que el perfil necesita de cualquier cuenta (paciente o nutriólogo).
 abstract interface class AccountIdentity implements Listenable {
   String? get displayName;
   String get initials;

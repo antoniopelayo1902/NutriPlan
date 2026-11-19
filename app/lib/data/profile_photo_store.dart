@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
 
 /// Foto de perfil guardada solo en el teléfono (sin Firebase Storage).
@@ -11,6 +12,7 @@ abstract final class ProfilePhotoStore {
   /// Copia la imagen a la carpeta de la app y borra la foto anterior.
   /// El nombre lleva la hora para que Flutter no muestre la imagen vieja.
   static Future<String> save(String uid, String sourcePath) async {
+    if (kIsWeb) return sourcePath;
     await delete(uid);
     final Directory dir = await _dir();
     final String target =
@@ -21,6 +23,7 @@ abstract final class ProfilePhotoStore {
 
   /// Ruta de la foto guardada del usuario, o null si no tiene.
   static Future<String?> load(String uid) async {
+    if (kIsWeb) return null; // No local folder in the browser.
     final Directory dir = await _dir();
     for (final FileSystemEntity f in dir.listSync()) {
       if (f is File && f.uri.pathSegments.last.startsWith(_prefix(uid))) {
@@ -31,6 +34,7 @@ abstract final class ProfilePhotoStore {
   }
 
   static Future<void> delete(String uid) async {
+    if (kIsWeb) return;
     final Directory dir = await _dir();
     for (final FileSystemEntity f in dir.listSync()) {
       if (f is File && f.uri.pathSegments.last.startsWith(_prefix(uid))) {

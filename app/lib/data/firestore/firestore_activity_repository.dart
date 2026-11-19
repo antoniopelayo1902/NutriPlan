@@ -14,7 +14,7 @@ class FirestoreActivityRepository implements ActivityRepository {
   final String uid;
   final Clock clock;
 
-  /// La meta de actividad viene del plan que publicó la nutrióloga.
+  /// La meta de actividad viene del plan que publicó el nutriólogo.
   @override
   Future<ActivityGoal> loadGoal() async {
     final DocumentSnapshot<Map<String, dynamic>> plan =

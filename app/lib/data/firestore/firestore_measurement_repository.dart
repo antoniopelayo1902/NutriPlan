@@ -22,7 +22,7 @@ class FirestoreMeasurementRepository implements MeasurementRepository {
     ];
   }
 
-  /// Create: la nutrióloga registra una medida nueva (id automático).
+  /// Create: el nutriólogo registra una medida nueva (id automático).
   Future<void> add(Measurement m) async {
     await FirestorePaths.measurements(uid)
         .add(FirestoreMappers.measurementToMap(m));

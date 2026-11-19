@@ -9,14 +9,14 @@ import '../mock/seed.dart';
 import 'firestore_mappers.dart';
 import 'firestore_paths.dart';
 
-/// Crea en Firestore el plan de ejemplo que la nutrióloga le asigna a una
+/// Crea en Firestore el plan de ejemplo que el nutriólogo le asigna a una
 /// cuenta nueva. Después de esto, la app solo lee y escribe en Firestore.
 class FirestoreSeeder {
   FirestoreSeeder({required this.clock});
 
   final Clock clock;
 
-  /// Catálogo compartido: la nutrióloga y las opciones equivalentes.
+  /// Catálogo compartido: el nutriólogo y las opciones equivalentes.
   Future<void> ensureCatalog() async {
     final SeedData seed = SeedData.build(clock);
     final DocumentSnapshot<Map<String, dynamic>> nut =

@@ -212,7 +212,7 @@ abstract final class FirestoreMappers {
     );
   }
 
-  // Paciente (documento del usuario) y nutrióloga
+  // Paciente (documento del usuario) y nutriólogo
   static Patient patientFromMap(String uid, Map<String, dynamic> m) => Patient(
     id: uid,
     name: m['name'] as String,

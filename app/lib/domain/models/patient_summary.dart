@@ -1,4 +1,4 @@
-/// Paciente como lo ve la nutrióloga en su lista.
+/// Paciente como lo ve el nutriólogo en su lista.
 class PatientSummary {
   const PatientSummary({
     required this.uid,
