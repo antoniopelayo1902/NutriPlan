@@ -13,35 +13,40 @@ import '../../../domain/models/measurement.dart';
 import '../../../domain/models/patient_summary.dart';
 import '../../../domain/models/portions.dart';
 import '../../../domain/services/measurement_trend.dart';
-import '../../../theme/food_color.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/tokens_context.dart';
 import '../../components/actions/app_button.dart';
-import '../../components/actions/app_icon_button.dart';
 import '../../components/actions/segmented_control.dart';
 import '../../components/data_display/confirm_dialog.dart';
 import '../../components/data_display/empty_state.dart';
-import '../../components/data_display/eyebrow.dart';
-import '../../components/data_display/list_item.dart';
 import '../../components/domain/body_composition_card.dart';
 import '../../components/domain/measurement_history_card.dart';
-import '../../components/primitives/app_card.dart';
-import '../../components/primitives/app_divider.dart';
-import '../../components/primitives/app_icon.dart';
 import '../../components/primitives/app_stack.dart';
-import '../../components/primitives/app_text.dart';
-import '../../components/primitives/skeleton.dart';
 import '../page_frame.dart';
 import 'measurement_form_screen.dart';
+import 'nutri_measurements_panel.dart';
+import 'nutri_panel_loading.dart';
+import 'nutri_patient_header.dart';
+import 'nutri_portions_panel.dart';
 
 enum _Tab { measures, history, portions }
 
-/// Detalle de un paciente para la nutrióloga: sus medidas (CRUD), su
+/// Detalle de un paciente para el nutriólogo: sus medidas (CRUD), su
 /// historial y las porciones de su plan.
 class NutriPatientScreen extends StatefulWidget {
-  const NutriPatientScreen({super.key, required this.patient});
+  const NutriPatientScreen({
+    super.key,
+    required this.patient,
+    this.embedded = false,
+    this.onUnlinked,
+  });
 
   final PatientSummary patient;
+
+  /// True inside the web two-pane layout: no back button, and unlinking
+  /// calls [onUnlinked] instead of popping the route.
+  final bool embedded;
+  final VoidCallback? onUnlinked;
 
   @override
   State<NutriPatientScreen> createState() => _NutriPatientScreenState();
@@ -168,129 +173,85 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
     if (!sure) return;
     final bool ok = await nutri.unlink(_uid);
     toast.show(ok ? S.patientUnlinked : S.actionFailed);
-    if (ok && mounted) Navigator.pop(context);
+    if (!ok || !mounted) return;
+    if (widget.embedded) {
+      widget.onUnlinked?.call();
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final AppTokens t = context.tokens;
+    final bool wide = widget.embedded;
+    final Widget tabs = SegmentedControl<_Tab>(
+      fullWidth: !wide,
+      value: _tab,
+      // setState redibuja la pestaña elegida.
+      onChanged: (_Tab v) => setState(() => _tab = v),
+      options: const <SegmentOption<_Tab>>[
+        SegmentOption<_Tab>(_Tab.measures, S.tabMeasures),
+        SegmentOption<_Tab>(_Tab.history, S.tabHistory),
+        SegmentOption<_Tab>(_Tab.portions, S.tabPortions),
+      ],
+    );
+    final Widget unlink = AppButton(
+      key: const Key('unlinkButton'),
+      label: S.unlinkPatient,
+      variant: ButtonVariant.ghost,
+      fullWidth: !wide,
+      onPressed: _unlink,
+    );
     return PageFrame(
       eyebrow: S.patientEyebrow,
       title: widget.patient.name,
+      showBack: !wide,
+      wide: wide,
       onRefresh: _refresh,
+      header: wide
+          ? ListenableBuilder(
+              listenable: _progress,
+              builder: (BuildContext context, Widget? _) => NutriPatientHeader(
+                patient: widget.patient,
+                latest: _progress.latest,
+                dailyKcal: _targets?.kcal,
+              ),
+            )
+          : null,
       children: <Widget>[
-        SegmentedControl<_Tab>(
-          fullWidth: true,
-          value: _tab,
-          // setState redibuja la pestaña elegida.
-          onChanged: (_Tab v) => setState(() => _tab = v),
-          options: const <SegmentOption<_Tab>>[
-            SegmentOption<_Tab>(_Tab.measures, S.tabMeasures),
-            SegmentOption<_Tab>(_Tab.history, S.tabHistory),
-            SegmentOption<_Tab>(_Tab.portions, S.tabPortions),
-          ],
-        ),
+        wide ? Align(alignment: Alignment.centerLeft, child: tabs) : tabs,
         ListenableBuilder(
           listenable: _progress,
           builder: (BuildContext context, Widget? _) {
             switch (_tab) {
               case _Tab.measures:
-                return _measures(t);
+                return _measures();
               case _Tab.history:
                 return _history(t);
               case _Tab.portions:
-                return _portions(t);
+                return _portions();
             }
           },
         ),
-        AppButton(
-          key: const Key('unlinkButton'),
-          label: S.unlinkPatient,
-          variant: ButtonVariant.ghost,
-          fullWidth: true,
-          onPressed: _unlink,
-        ),
+        wide ? Align(alignment: Alignment.centerLeft, child: unlink) : unlink,
       ],
     );
   }
 
-  Widget _loading(AppTokens t) => AppStack(
-    gap: t.space.s3,
-    children: <Widget>[
-      for (int i = 0; i < 2; i++)
-        Skeleton(height: t.size.skeletonCard, radius: t.radius.xl),
-    ],
-  );
-
-  Widget _measures(AppTokens t) {
-    if (_progress.loading) return _loading(t);
-    final List<Measurement> all = _progress.measurements.reversed.toList();
-    return AppStack(
-      gap: t.space.s3,
-      children: <Widget>[
-        AppButton(
-          key: const Key('addMeasurementButton'),
-          label: S.addMeasurement,
-          iconLeft: AppIconName.add,
-          variant: ButtonVariant.outlineAccent,
-          fullWidth: true,
-          onPressed: () => _openForm(),
-        ),
-        if (all.isEmpty)
-          const EmptyState(
-            title: S.noMeasurementsTitle,
-            body: S.noMeasurementsBody,
-          )
-        else
-          AppCard(
-            padding: t.space.s5,
-            child: AppStack(
-              gap: t.space.s2,
-              children: <Widget>[
-                for (int i = 0; i < all.length; i++) ...<Widget>[
-                  if (i > 0) const AppDivider(),
-                  _measurementRow(t, all[i]),
-                ],
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _measurementRow(AppTokens t, Measurement m) {
-    final double bmi = m.weightKg / (m.heightM * m.heightM);
-    return ListItem(
-      key: Key('measurement-${m.id}'),
-      title: S.fullDate(formatDayMonth(m.date), m.date.year),
-      subtitle:
-          '${S.measurementSummary(formatWithUnit(formatDecimal(m.weightKg), S.unitKg), formatWithUnit(formatDecimal(m.bodyFatPct), S.unitPct), formatWithUnit(formatDecimal(m.muscleKg), S.unitKg))}'
-          ' · ${S.bmiLabel(formatDecimal(bmi))}',
-      trailing: AppStack(
-        direction: Axis.horizontal,
-        gap: t.space.s1,
-        children: <Widget>[
-          AppIconButton(
-            key: Key('editMeasurement-${m.id}'),
-            icon: AppIconName.edit,
-            size: IconButtonSize.sm,
-            semanticLabel: S.editMeasurement,
-            onPressed: () => _openForm(m),
-          ),
-          AppIconButton(
-            key: Key('deleteMeasurement-${m.id}'),
-            icon: AppIconName.delete,
-            size: IconButtonSize.sm,
-            semanticLabel: S.deleteMeasurement,
-            onPressed: () => _delete(m),
-          ),
-        ],
-      ),
+  Widget _measures() {
+    if (_progress.loading) return const NutriPanelLoading();
+    return NutriMeasurementsPanel(
+      measurements: _progress.measurements.reversed.toList(),
+      wide: widget.embedded,
+      onAdd: _openForm,
+      onEdit: _openForm,
+      onDelete: _delete,
     );
   }
 
   Widget _history(AppTokens t) {
-    if (_progress.loading) return _loading(t);
+    if (_progress.loading) return const NutriPanelLoading();
     final MetricTrend? trend =
         _progress.trend(_metric) ?? _progress.trend(MeasurementMetric.weight);
     if (trend == null || _progress.latest == null) {
@@ -301,115 +262,39 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
     }
     final String nutri =
         context.read<NutriController>().displayName ?? S.roleNutritionist;
+    final Widget chart = MeasurementHistoryCard(
+      metric: trend.metric,
+      trend: trend,
+      onMetricChanged: (MeasurementMetric m) => setState(() => _metric = m),
+    );
+    final Widget body = BodyCompositionCard(
+      measurement: _progress.latest!,
+      nutritionistName: nutri,
+    );
     return AppStack(
-      gap: t.space.s3,
+      direction: widget.embedded ? Axis.horizontal : Axis.vertical,
+      gap: widget.embedded ? t.space.s5 : t.space.s3,
+      align: CrossAxisAlignment.start,
       children: <Widget>[
-        MeasurementHistoryCard(
-          metric: trend.metric,
-          trend: trend,
-          onMetricChanged: (MeasurementMetric m) => setState(() => _metric = m),
-        ),
-        BodyCompositionCard(
-          measurement: _progress.latest!,
-          nutritionistName: nutri,
-        ),
+        widget.embedded ? Expanded(flex: 3, child: chart) : chart,
+        widget.embedded ? Expanded(flex: 2, child: body) : body,
       ],
     );
   }
 
-  Widget _portions(AppTokens t) {
-    if (_targetsLoading) return _loading(t);
+  Widget _portions() {
+    if (_targetsLoading) return const NutriPanelLoading();
     final Portions? targets = _targets;
     if (targets == null) {
       return const EmptyState(title: S.noPatientPlan);
     }
-    return AppStack(
-      gap: t.space.s3,
-      children: <Widget>[
-        AppCard(
-          padding: t.space.s5,
-          child: AppStack(
-            gap: t.space.s2,
-            children: <Widget>[
-              const Eyebrow(S.tabPortions),
-              const AppText(
-                S.portionsBody,
-                variant: TextVariant.bodySm,
-                tone: TextTone.secondary,
-              ),
-              for (final FoodGroup g in FoodGroup.values)
-                _portionRow(t, g, targets[g]),
-              const AppDivider(),
-              AppText(
-                S.portionsKcal(formatInt(targets.kcal.round())),
-                key: const Key('portionsKcal'),
-                variant: TextVariant.titleMd,
-              ),
-            ],
-          ),
-        ),
-        AppButton(
-          key: const Key('publishPlanButton'),
-          label: S.publishPlan,
-          fullWidth: true,
-          loading: _publishing,
-          onPressed: _publishing ? null : _publish,
-        ),
-      ],
-    );
-  }
-
-  Widget _portionRow(AppTokens t, FoodGroup g, double value) {
-    final String label = groupBudgetLabel(g);
-    return ListItem(
-      leading: SizedBox(
-        width: t.size.dotLg,
-        height: t.size.dotLg,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: foodColor(t.colors, g).solid,
-            shape: BoxShape.circle,
-          ),
-        ),
-      ),
-      title: label,
-      subtitle: _minimums[g] > 0
-          ? S.portionMinimum(formatPortion(_minimums[g]))
-          : null,
-      trailing: AppStack(
-        direction: Axis.horizontal,
-        gap: t.space.s2,
-        align: CrossAxisAlignment.center,
-        children: <Widget>[
-          AppIconButton(
-            key: Key('minus-${g.name}'),
-            icon: AppIconName.remove,
-            size: IconButtonSize.sm,
-            variant: IconButtonVariant.outline,
-            semanticLabel: S.decrease(label),
-            onPressed: value <= _minimums[g] ? null : () => _step(g, -0.5),
-          ),
-          SizedBox(
-            width: t.space.s7,
-            child: AppText(
-              formatPortion(value),
-              key: Key('portion-${g.name}'),
-              variant: TextVariant.label,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          AppIconButton(
-            key: Key('plus-${g.name}'),
-            icon: AppIconName.add,
-            size: IconButtonSize.sm,
-            variant: IconButtonVariant.outline,
-            semanticLabel: S.increase(label),
-            onPressed: value >= Portions.maxPerGroup
-                ? null
-                : () => _step(g, 0.5),
-          ),
-        ],
-      ),
+    return NutriPortionsPanel(
+      targets: targets,
+      minimums: _minimums,
+      publishing: _publishing,
+      wide: widget.embedded,
+      onStep: _step,
+      onPublish: _publish,
     );
   }
 }

@@ -29,7 +29,7 @@ import '../page_frame.dart';
 import 'scan_plan_screen.dart';
 import 'share_plan_screen.dart';
 
-/// Perfil de paciente o nutrióloga: foto desde la galería, nombre, token,
+/// Perfil de paciente o nutriólogo: foto desde la galería, nombre, token,
 /// Factor WOW y cuenta.
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fullWidth: true,
                 onPressed: () => _open(SharePlanScreen(nutritionist: _isNutri)),
               ),
-              // La nutrióloga no importa planes: solo comparte su código.
+              // El nutriólogo no importa planes: solo comparte su código.
               if (!_isNutri)
                 AppButton(
                   key: const Key('scanPlanButton'),
@@ -243,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /// Correo, nutrióloga y token del dispositivo guardado en Firestore.
+  /// Correo, nutriólogo y token del dispositivo guardado en Firestore.
   Widget _accountCard(AppTokens t, AuthScope? auth) {
     return AppCard(
       padding: t.space.s5,

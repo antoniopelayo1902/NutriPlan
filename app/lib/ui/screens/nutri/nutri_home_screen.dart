@@ -23,7 +23,7 @@ import '../page_frame.dart';
 import '../profile/share_plan_screen.dart';
 import 'nutri_patient_screen.dart';
 
-/// Inicio de la nutrióloga: la lista de sus pacientes desde Firestore.
+/// Inicio del nutriólogo: la lista de sus pacientes desde Firestore.
 class NutriHomeScreen extends StatelessWidget {
   const NutriHomeScreen({super.key});
 

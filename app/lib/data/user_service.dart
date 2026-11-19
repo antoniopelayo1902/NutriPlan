@@ -63,7 +63,7 @@ abstract final class UserService {
     await seeder.seedUser(user.uid);
   }
 
-  /// Nutrióloga nueva: su documento y su nombre en el catálogo.
+  /// Nutriólogo nueva: su documento y su nombre en el catálogo.
   static Future<void> _createNutritionist(User user) async {
     final String name = _defaultName(user);
     final WriteBatch batch = FirestorePaths.db.batch();
@@ -118,7 +118,7 @@ abstract final class UserService {
       await batch.commit();
     }
     await FirestorePaths.plan(uid).delete();
-    // Si era nutrióloga, sus pacientes regresan a la nutrióloga de ejemplo.
+    // Si era nutriólogo, sus pacientes regresan al nutriólogo de ejemplo.
     for (final p in await NutritionistService.patientsOf(uid)) {
       await NutritionistService.unlink(p.uid);
     }

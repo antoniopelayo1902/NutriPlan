@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../domain/models/patient_summary.dart';
 import 'account_identity.dart';
 
-/// Estado de la cuenta de nutrióloga: su nombre y su lista de pacientes.
+/// Estado de la cuenta de nutriólogo: su nombre y su lista de pacientes.
 /// Las llamadas a Firestore llegan inyectadas para poder probarlo.
 class NutriController extends ChangeNotifier implements AccountIdentity {
   NutriController({
@@ -12,16 +12,20 @@ class NutriController extends ChangeNotifier implements AccountIdentity {
     required Future<List<PatientSummary>> Function() loadPatients,
     required Future<void> Function(String name) saveName,
     required Future<void> Function(String patientUid) unlink,
+    required Future<void> Function(String name, String email, String objective)
+    createPatient,
   }) : _loadName = loadName,
        _loadPatients = loadPatients,
        _saveName = saveName,
-       _unlink = unlink;
+       _unlink = unlink,
+       _createPatient = createPatient;
 
   final String uid;
   final Future<String> Function() _loadName;
   final Future<List<PatientSummary>> Function() _loadPatients;
   final Future<void> Function(String) _saveName;
   final Future<void> Function(String) _unlink;
+  final Future<void> Function(String, String, String) _createPatient;
 
   bool _loading = true;
   Object? _error;
@@ -65,6 +69,19 @@ class NutriController extends ChangeNotifier implements AccountIdentity {
       _name = name.trim();
       notifyListeners();
       return true;
+    } catch (e) {
+      _error = e;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Registra un paciente a mano y recarga la lista. Regresa false si falla.
+  Future<bool> addPatient(String name, String email, String objective) async {
+    try {
+      await _createPatient(name, email, objective);
+      await load(silent: true);
+      return !hasError;
     } catch (e) {
       _error = e;
       notifyListeners();

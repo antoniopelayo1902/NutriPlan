@@ -310,7 +310,7 @@ abstract final class S {
   static const String nameSaved = 'Nombre guardado';
   static const String nameRequired = 'Escribe tu nombre.';
   static const String emailLabel = 'Correo';
-  static const String nutritionistLabel = 'Tu nutrióloga';
+  static const String nutritionistLabel = 'Tu nutriólogo';
   static const String tokenLabel = 'Token del dispositivo';
   static const String tokenSaved = 'Guardado en Firebase';
   static const String tokenMissing = 'No disponible en este dispositivo';
@@ -377,10 +377,10 @@ abstract final class S {
   // Tipos de cuenta
   static const String roleLabel = 'Tipo de cuenta';
   static const String rolePatient = 'Paciente';
-  static const String roleNutritionist = 'Nutrióloga';
+  static const String roleNutritionist = 'Nutriólogo';
   static const String roleHint = 'Se usa al crear tu cuenta.';
 
-  // Vincular paciente con nutrióloga
+  // Vincular paciente con nutriólogo
   static const String nutriCodeTitle = 'Mi código';
   static const String nutriWowEyebrow = 'Vincular pacientes';
   static const String nutriCodeBody =
@@ -389,18 +389,18 @@ abstract final class S {
       'Comparte tu código QR para que tus pacientes se vinculen contigo.';
   static const String scanAny = 'Escanear código QR';
   static const String scanBodyAny =
-      'Escanea el código de tu nutrióloga para vincularte, o el de otro '
+      'Escanea el código de tu nutriólogo para vincularte, o el de otro '
       'paciente para importar su plan.';
   static String linkTitle(String name) => '¿Vincularte con $name?';
   static const String linkBody =
-      'Tu nutrióloga podrá ver tu información, registrar tus medidas y '
+      'Tu nutriólogo podrá ver tu información, registrar tus medidas y '
       'ajustar tu plan.';
   static const String linkAction = 'Vincular';
   static String linked(String name) => 'Te vinculaste con $name';
-  static const String alreadyLinked = 'Ya estás vinculada con esa nutrióloga.';
+  static const String alreadyLinked = 'Ya tienes vinculado a ese nutriólogo.';
   static const String linkFailed = 'No se pudo vincular.';
 
-  // Nutrióloga: pacientes
+  // Nutriólogo: pacientes
   static const String nutriEyebrow = 'Consultorio';
   static const String patientsTitle = 'Mis pacientes';
   static const String patientsEmptyTitle = 'Aún no tienes pacientes';
@@ -415,7 +415,7 @@ abstract final class S {
   static const String unlinkAction = 'Desvincular';
   static const String patientUnlinked = 'Paciente desvinculado';
 
-  // Nutrióloga: detalle del paciente
+  // Nutriólogo: detalle del paciente
   static const String patientEyebrow = 'Paciente';
   static const String tabMeasures = 'Medidas';
   static const String tabHistory = 'Historial';

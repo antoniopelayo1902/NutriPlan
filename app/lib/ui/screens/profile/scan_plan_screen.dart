@@ -21,7 +21,7 @@ import '../login/auth_gate.dart';
 import '../page_frame.dart';
 
 /// Factor WOW (parte 2): escanea un QR con la cámara (mobile_scanner), de
-/// una foto o pegado. El de una nutrióloga vincula al paciente con ella; el
+/// una foto o pegado. El de un nutriólogo vincula al paciente con él; el
 /// de otro paciente importa su plan.
 class ScanPlanScreen extends StatefulWidget {
   const ScanPlanScreen({super.key});
@@ -132,7 +132,7 @@ class _ScanPlanScreenState extends State<ScanPlanScreen> {
     }
   }
 
-  /// Vincula al paciente con la nutrióloga del código.
+  /// Vincula al paciente con el nutriólogo del código.
   Future<void> _link(
     String myUid,
     String nutriUid,

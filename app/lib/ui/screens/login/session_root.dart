@@ -96,6 +96,13 @@ class _SessionRootState extends State<SessionRoot> {
         loadPatients: () => NutritionistService.patientsOf(uid),
         saveName: (String name) => NutritionistService.rename(uid, name),
         unlink: NutritionistService.unlink,
+        createPatient: (String name, String email, String objective) =>
+            NutritionistService.createPatient(
+              nutriUid: uid,
+              name: name,
+              email: email,
+              objective: objective,
+            ),
       );
       session = _Session.nutritionist(nutri, ToastController(), photo);
       unawaited(nutri.load());

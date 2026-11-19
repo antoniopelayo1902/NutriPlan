@@ -16,12 +16,7 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
-    }
+    if (kIsWeb) return web;
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -48,6 +43,18 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  // Web app of the nutriplan-88357 project (test project, not the one the
+  // mobile app uses).
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyA0vsPsYJ7aGl9p0W8Rp1nt-0tlWfmNXSc',
+    appId: '1:115539449872:web:b8ee1e74b12064ab285295',
+    messagingSenderId: '115539449872',
+    projectId: 'nutriplan-88357',
+    authDomain: 'nutriplan-88357.firebaseapp.com',
+    storageBucket: 'nutriplan-88357.firebasestorage.app',
+    measurementId: 'G-TE6VZS6JBY',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCvbFbpvSg1w0YrSm6_-f7-wmV5fmtjJ3w',

@@ -5,6 +5,7 @@ import '../../application/toast_controller.dart';
 
 import '../../core/i18n/strings_es_mx.dart';
 import '../../theme/tokens.dart';
+import '../../theme/tokens_web.dart';
 import '../../theme/tokens_context.dart';
 import '../components/actions/app_icon_button.dart';
 import '../components/data_display/screen_header.dart';
@@ -23,6 +24,8 @@ class PageFrame extends StatelessWidget {
     this.showBack = true,
     this.trailing,
     this.onRefresh,
+    this.header,
+    this.wide = false,
   });
 
   final String eyebrow;
@@ -35,6 +38,12 @@ class PageFrame extends StatelessWidget {
 
   /// Si llega, jalar hacia abajo recarga la pantalla (swipe down).
   final Future<void> Function()? onRefresh;
+
+  /// Replaces the standard title block (used by the web patient detail).
+  final Widget? header;
+
+  /// Desktop width: wider column and roomier side padding.
+  final bool wide;
 
   @override
   Widget build(BuildContext context) {
@@ -74,29 +83,43 @@ class PageFrame extends StatelessWidget {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.fromLTRB(
-        t.space.s5,
+        wide ? t.space.s7 : t.space.s5,
         showBack ? t.space.s2 : t.space.s4,
-        t.space.s5,
+        wide ? t.space.s7 : t.space.s5,
         t.space.s8,
       ),
-      child: AppStack(
-        gap: t.space.s5,
-        children: <Widget>[
-          if (showBack)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: AppIconButton(
-                key: const Key('backButton'),
-                icon: AppIconName.chevronLeft,
-                variant: IconButtonVariant.outline,
-                semanticLabel: S.back,
-                // Navigator.pop regresa a la pantalla anterior.
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-          ScreenHeader(eyebrow: eyebrow, title: title, trailing: trailing),
-          ...children,
-        ],
+      // On wide screens (web) the content keeps a readable column.
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: wide ? t.size.webDetailMax : t.size.webContentMax,
+          ),
+          child: AppStack(
+            gap: t.space.s5,
+            children: <Widget>[
+              if (showBack)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: AppIconButton(
+                    key: const Key('backButton'),
+                    icon: AppIconName.chevronLeft,
+                    variant: IconButtonVariant.outline,
+                    semanticLabel: S.back,
+                    // Navigator.pop regresa a la pantalla anterior.
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+              header ??
+                  ScreenHeader(
+                    eyebrow: eyebrow,
+                    title: title,
+                    trailing: trailing,
+                  ),
+              ...children,
+            ],
+          ),
+        ),
       ),
     );
   }

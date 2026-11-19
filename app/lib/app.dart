@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,8 @@ import 'ui/app_providers.dart';
 import 'ui/screens/login/auth_gate.dart';
 import 'ui/screens/nutri/nutri_home_screen.dart';
 import 'ui/shell/app_shell.dart';
+import 'ui/web/nutri_web_shell.dart';
+import 'ui/web/web_nutri_only_screen.dart';
 
 /// Root widget. Rebuilds the theme whenever the runtime accent changes.
 class NutriPlanApp extends StatelessWidget {
@@ -60,15 +63,16 @@ class NutriPlanApp extends StatelessWidget {
 }
 
 /// Primera pantalla del Navigator según el tipo de cuenta: las cinco
-/// pestañas del paciente o la lista de pacientes de la nutrióloga.
+/// pestañas del paciente o la lista de pacientes del nutriólogo.
 class _Home extends StatelessWidget {
   const _Home();
 
   @override
   Widget build(BuildContext context) {
     if (context.watch<UserRole>() == UserRole.nutritionist) {
-      return const NutriHomeScreen();
+      return kIsWeb ? const NutriWebShell() : const NutriHomeScreen();
     }
+    if (kIsWeb) return const WebNutriOnlyScreen();
     return AppShell(controllers: context.read<AppControllers>());
   }
 }

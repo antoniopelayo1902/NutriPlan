@@ -6,7 +6,7 @@ import '../../domain/repositories/patient_repository.dart';
 import 'firestore_mappers.dart';
 import 'firestore_paths.dart';
 
-/// Datos del paciente (users/{uid}) y de su nutrióloga.
+/// Datos del paciente (users/{uid}) y de su nutriólogo.
 class FirestorePatientRepository implements PatientRepository {
   FirestorePatientRepository({required this.uid});
 

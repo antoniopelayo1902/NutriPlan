@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -12,7 +13,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseEmulators.connectIfEnabled();
   // Reads the iOS CLIENT_ID from GoogleService-Info.plist.
-  await GoogleSignIn.instance.initialize();
+  if (!kIsWeb) await GoogleSignIn.instance.initialize();
   // Los controllers se arman con los datos de Firestore al iniciar sesión.
   runApp(NutriPlanApp(accent: AccentController(), requireAuth: true));
 }
