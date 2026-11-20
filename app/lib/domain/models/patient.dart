@@ -22,12 +22,11 @@ class Patient {
     required this.birthDate,
     required this.sex,
     required this.objective,
-    required this.nutritionistId,
+    this.nutritionistId,
+    this.profileComplete = true,
   }) {
-    if (id.isEmpty || name.trim().isEmpty || nutritionistId.isEmpty) {
-      throw const DomainValidationError(
-        'Patient id, name and nutritionist are required',
-      );
+    if (id.isEmpty || name.trim().isEmpty) {
+      throw const DomainValidationError('Patient id and name are required');
     }
   }
 
@@ -36,7 +35,12 @@ class Patient {
   final DateTime birthDate;
   final String sex;
   final String objective;
-  final String nutritionistId;
+
+  /// Null mientras el paciente no se vincula con un nutriólogo.
+  final String? nutritionistId;
+
+  /// False justo después del registro, hasta que llena sus datos.
+  final bool profileComplete;
 
   /// Up to two initials from the name, upper-cased.
   String get initials {

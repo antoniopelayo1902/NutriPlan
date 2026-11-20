@@ -101,10 +101,10 @@ abstract final class NutritionistService {
     return nutri.data()!['name'] as String;
   }
 
-  /// Quita al paciente de la lista: vuelve al nutriólogo de ejemplo.
+  /// Quita al paciente de la lista: queda sin nutriólogo.
   static Future<void> unlink(String patientUid) async {
     await FirestorePaths.user(patientUid)
-        .update(<String, dynamic>{'nutritionistId': SeedData.nutritionistId});
+        .update(<String, dynamic>{'nutritionistId': null});
   }
 
   /// Porciones diarias del plan del paciente, o null si no tiene plan.

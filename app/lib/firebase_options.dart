@@ -44,16 +44,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // Web app of the nutriplan-88357 project (test project, not the one the
-  // mobile app uses).
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA0vsPsYJ7aGl9p0W8Rp1nt-0tlWfmNXSc',
-    appId: '1:115539449872:web:b8ee1e74b12064ab285295',
-    messagingSenderId: '115539449872',
-    projectId: 'nutriplan-88357',
-    authDomain: 'nutriplan-88357.firebaseapp.com',
-    storageBucket: 'nutriplan-88357.firebasestorage.app',
-    measurementId: 'G-TE6VZS6JBY',
+    apiKey: 'AIzaSyDZwisrI32PzcfHIPGGDRyK3fWF_T4kF-w',
+    appId: '1:176299198859:web:2518270b81eb76ee58c78e',
+    messagingSenderId: '176299198859',
+    projectId: 'nutriplann-e4b0f',
+    authDomain: 'nutriplann-e4b0f.firebaseapp.com',
+    storageBucket: 'nutriplann-e4b0f.firebasestorage.app',
+    measurementId: 'G-1TR9Z1PV2P',
   );
 
   static const FirebaseOptions android = FirebaseOptions(

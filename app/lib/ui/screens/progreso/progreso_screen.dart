@@ -126,7 +126,7 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
         final DateTime today = c.plan.today;
         final int delta = c.plan.adherenceDeltaPts;
         final MetricTrend? weight = c.progress.trend(MeasurementMetric.weight);
-        final String nutri = c.profile.nutritionist?.name ?? '';
+        final String nutri = c.profile.nutritionistName;
         return AppStack(
           gap: t.space.s3,
           children: <Widget>[
@@ -198,7 +198,7 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
         final MetricTrend trend =
             c.progress.trend(_metric) ??
             c.progress.trend(MeasurementMetric.weight)!;
-        final String nutri = c.profile.nutritionist?.name ?? '';
+        final String nutri = c.profile.nutritionistName;
         final MetricTrend? weight = c.progress.trend(MeasurementMetric.weight);
         final MetricTrend? fat = c.progress.trend(MeasurementMetric.bodyFat);
         final MetricTrend? waist = c.progress.trend(MeasurementMetric.waist);

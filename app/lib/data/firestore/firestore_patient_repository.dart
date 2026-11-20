@@ -21,12 +21,34 @@ class FirestorePatientRepository implements PatientRepository {
   }
 
   @override
-  Future<Nutritionist> getNutritionist() async {
-    final Patient patient = await getPatient();
+  Future<Nutritionist?> getNutritionist() async {
+    final String? id = (await getPatient()).nutritionistId;
+    if (id == null) return null;
     final DocumentSnapshot<Map<String, dynamic>> doc =
-        await FirestorePaths.nutritionist(patient.nutritionistId).get();
-    if (!doc.exists) throw const NotFoundError('Nutritionist not found');
+        await FirestorePaths.nutritionist(id).get();
+    if (!doc.exists) return null;
     return FirestoreMappers.nutritionistFromMap(doc.id, doc.data()!);
+  }
+
+  /// Guarda los datos del registro y marca el perfil como completo.
+  @override
+  Future<void> updateProfile({
+    required String name,
+    required DateTime birthDate,
+    required String sex,
+    required String objective,
+  }) async {
+    if (name.trim().isEmpty) {
+      throw const DomainValidationError('Name is required');
+    }
+    await FirestorePaths.user(uid).update(<String, dynamic>{
+      'name': name.trim(),
+      'birthDate': Timestamp.fromDate(birthDate),
+      'sex': sex,
+      'objective': objective,
+      'profileComplete': true,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   /// Cambia el nombre que se muestra en el perfil.

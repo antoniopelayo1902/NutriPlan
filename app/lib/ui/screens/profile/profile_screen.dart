@@ -270,7 +270,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ) => ListItem(
                       key: const Key('nutritionistRow'),
                       title: S.nutritionistLabel,
-                      subtitle: profile.nutritionist?.name ?? '',
+                      subtitle:
+                          profile.nutritionist?.name ?? S.noNutritionistShort,
                     ),
               ),
               const AppDivider(),

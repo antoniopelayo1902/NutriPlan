@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'application/app_controllers.dart';
+import 'application/profile_controller.dart';
 import 'core/i18n/strings_es_mx.dart';
 import 'theme/accent_controller.dart';
 import 'theme/app_theme.dart';
@@ -11,6 +12,7 @@ import 'domain/models/user_role.dart';
 import 'ui/app_providers.dart';
 import 'ui/screens/login/auth_gate.dart';
 import 'ui/screens/nutri/nutri_home_screen.dart';
+import 'ui/screens/profile/profile_setup_screen.dart';
 import 'ui/shell/app_shell.dart';
 import 'ui/web/nutri_web_shell.dart';
 import 'ui/web/web_nutri_only_screen.dart';
@@ -73,6 +75,11 @@ class _Home extends StatelessWidget {
       return kIsWeb ? const NutriWebShell() : const NutriHomeScreen();
     }
     if (kIsWeb) return const WebNutriOnlyScreen();
+    // Paciente recién registrado: primero llena sus datos.
+    final ProfileController profile = context.watch<ProfileController>();
+    if (profile.patient != null && !profile.patient!.profileComplete) {
+      return const ProfileSetupScreen();
+    }
     return AppShell(controllers: context.read<AppControllers>());
   }
 }
