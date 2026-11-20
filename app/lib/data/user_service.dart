@@ -99,11 +99,17 @@ abstract final class UserService {
     return doc.data() ?? <String, dynamic>{};
   }
 
-  /// Borra la cuenta de Auth y después sus datos en Firestore. Primero Auth
-  /// para que, si Firebase pide volver a iniciar sesión, no se pierda nada.
+  /// Borra los datos en Firestore y después la cuenta de Auth. Los datos van
+  /// primero porque las reglas solo dejan escribir con sesión iniciada.
   static Future<void> deleteAccount(User user) async {
     final String uid = user.uid;
-    await user.delete();
+    // Firebase pide un login reciente para borrar la cuenta; se revisa antes
+    // de tocar los datos para no dejarlos a medias.
+    final DateTime? lastSignIn = user.metadata.lastSignInTime;
+    if (lastSignIn == null ||
+        DateTime.now().difference(lastSignIn) > const Duration(minutes: 5)) {
+      throw FirebaseAuthException(code: 'requires-recent-login');
+    }
     for (final CollectionReference<Map<String, dynamic>> c
         in <CollectionReference<Map<String, dynamic>>>[
           FirestorePaths.days(uid),
@@ -124,6 +130,7 @@ abstract final class UserService {
     }
     await FirestorePaths.nutritionist(uid).delete();
     await FirestorePaths.user(uid).delete();
+    await user.delete();
   }
 
   /// Nombre inicial: el de Google, o la parte del correo antes de la @.
