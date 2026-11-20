@@ -118,14 +118,21 @@ class SemanaScreen extends StatelessWidget {
                           ),
                       ],
                     ),
-                    Callout(
-                      S.planFooter(
-                        controllers.profile.nutritionist?.name ?? '',
-                        formatDayMonth(dateOnly(p.publishedAt)),
-                        p.weeks,
+                    if (controllers.profile.hasNutritionist)
+                      Callout(
+                        S.planFooter(
+                          controllers.profile.nutritionistName,
+                          formatDayMonth(dateOnly(p.publishedAt)),
+                          p.weeks,
+                        ),
+                        tone: CalloutTone.neutralDashed,
+                      )
+                    else
+                      const Callout(
+                        S.noNutritionistCallout,
+                        key: Key('noNutritionistCallout'),
+                        tone: CalloutTone.accentSoft,
                       ),
-                      tone: CalloutTone.neutralDashed,
-                    ),
                   ],
                 );
               },

@@ -43,7 +43,8 @@ class _CambiarScreenState extends State<CambiarScreen> {
   ) async {
     final Plan? plan = c.plan.plan;
     final DayPlan? day = plan?.dayOn(date);
-    final String nutri = c.profile.nutritionist?.name ?? '';
+    final bool hasNutri = c.profile.hasNutritionist;
+    final String nutri = c.profile.nutritionistName;
     String? movedFrom;
     if (fit.rebalance != null && day != null) {
       movedFrom = slotLabel(day.mealById(fit.rebalance!.fromMealId).slot);
@@ -71,7 +72,9 @@ class _CambiarScreenState extends State<CambiarScreen> {
         final String extra = c.flags.swapApproval
             ? ' ${S.toastSwapNoApproval}'
             : '';
-        c.toast.show('${S.toastSwapNo(nutri)}$extra');
+        c.toast.show(
+          '${hasNutri ? S.toastSwapNo(nutri) : S.toastSwapNoAlone}$extra',
+        );
     }
   }
 

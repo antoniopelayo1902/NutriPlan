@@ -20,7 +20,7 @@ class InMemoryPatientRepository implements PatientRepository {
   }
 
   @override
-  Future<Nutritionist> getNutritionist() async {
+  Future<Nutritionist?> getNutritionist() async {
     await Future<void>.delayed(latency);
     return _nutritionist;
   }
@@ -34,6 +34,24 @@ class InMemoryPatientRepository implements PatientRepository {
       birthDate: _patient.birthDate,
       sex: _patient.sex,
       objective: _patient.objective,
+      nutritionistId: _patient.nutritionistId,
+    );
+  }
+
+  @override
+  Future<void> updateProfile({
+    required String name,
+    required DateTime birthDate,
+    required String sex,
+    required String objective,
+  }) async {
+    await Future<void>.delayed(latency);
+    _patient = Patient(
+      id: _patient.id,
+      name: name.trim(),
+      birthDate: birthDate,
+      sex: sex,
+      objective: objective,
       nutritionistId: _patient.nutritionistId,
     );
   }

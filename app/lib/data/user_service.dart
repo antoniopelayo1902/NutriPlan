@@ -54,7 +54,10 @@ abstract final class UserService {
       'birthDate': Timestamp.fromDate(seed.patient.birthDate),
       'sex': seed.patient.sex,
       'objective': seed.patient.objective,
-      'nutritionistId': seed.nutritionist.id,
+      // Sin nutriólogo hasta que escanee su código QR.
+      'nutritionistId': null,
+      // Pide nombre, fecha de nacimiento, sexo y objetivo al entrar.
+      'profileComplete': false,
       'provider': _provider(user),
       'token': null,
       'createdAt': FieldValue.serverTimestamp(),
@@ -124,7 +127,7 @@ abstract final class UserService {
       await batch.commit();
     }
     await FirestorePaths.plan(uid).delete();
-    // Si era nutriólogo, sus pacientes regresan al nutriólogo de ejemplo.
+    // Si era nutriólogo, sus pacientes quedan sin nutriólogo.
     for (final p in await NutritionistService.patientsOf(uid)) {
       await NutritionistService.unlink(p.uid);
     }

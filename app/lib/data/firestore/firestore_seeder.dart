@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../core/clock.dart';
-import '../../domain/models/activity.dart';
 import '../../domain/models/equivalent_option.dart';
-import '../../domain/models/measurement.dart';
 import '../../domain/models/plan.dart';
 import '../mock/seed.dart';
 import 'firestore_mappers.dart';
@@ -18,17 +16,11 @@ class FirestoreSeeder {
 
   /// Catálogo compartido: el nutriólogo y las opciones equivalentes.
   Future<void> ensureCatalog() async {
-    final SeedData seed = SeedData.build(clock);
-    final DocumentSnapshot<Map<String, dynamic>> nut =
-        await FirestorePaths.nutritionist(seed.nutritionist.id).get();
     final QuerySnapshot<Map<String, dynamic>> opts =
         await FirestorePaths.optionsCollection().limit(1).get();
-    if (nut.exists && opts.docs.isNotEmpty) return;
+    if (opts.docs.isNotEmpty) return;
+    final SeedData seed = SeedData.build(clock);
     final WriteBatch batch = FirestorePaths.db.batch();
-    batch.set(
-      FirestorePaths.nutritionist(seed.nutritionist.id),
-      <String, dynamic>{'name': seed.nutritionist.name},
-    );
     for (final List<EquivalentOption> list in seed.options.values) {
       for (final EquivalentOption o in list) {
         batch.set(
@@ -40,27 +32,19 @@ class FirestoreSeeder {
     await batch.commit();
   }
 
-  /// Plan, días, sesiones y medidas de ejemplo para el usuario [uid].
+  /// Plan de la semana para una cuenta nueva: sin comidas marcadas, sin
+  /// sesiones y sin medidas. Lo demás lo captura el paciente o su nutriólogo.
   Future<void> seedUser(String uid) async {
     final SeedData seed = SeedData.build(clock);
     final WriteBatch batch = FirestorePaths.db.batch();
-    batch.set(FirestorePaths.plan(uid), FirestoreMappers.planToMap(seed.plan));
+    final Map<String, dynamic> plan = FirestoreMappers.planToMap(seed.plan);
+    plan['previousWeekAdherence'] = 0;
+    batch.set(FirestorePaths.plan(uid), plan);
     for (final DayPlan d in seed.plan.days) {
       batch.set(
         FirestorePaths.days(uid).doc(FirestoreMappers.dayId(d.date)),
-        FirestoreMappers.dayToMap(d),
+        FirestoreMappers.dayToMap(_freshDay(d)),
       );
-    }
-    for (final ActivityLog l in seed.logs) {
-      batch.set(
-        FirestorePaths.activityLogs(uid).doc(l.id),
-        FirestoreMappers.logToMap(_logFor(uid, l)),
-      );
-    }
-    for (final Measurement m in seed.measurements) {
-      final Map<String, dynamic> data = FirestoreMappers.measurementToMap(m);
-      data['patientId'] = uid;
-      batch.set(FirestorePaths.measurements(uid).doc(m.id), data);
     }
     await batch.commit();
   }
@@ -83,15 +67,6 @@ class FirestoreSeeder {
     }
     await batch.commit();
   }
-
-  static ActivityLog _logFor(String uid, ActivityLog l) => ActivityLog(
-    id: l.id,
-    patientId: uid,
-    date: l.date,
-    kind: l.kind,
-    minutes: l.minutes,
-    kcal: l.kcal,
-  );
 
   /// Día nuevo: sin comidas marcadas y con los platillos originales.
   static DayPlan _freshDay(DayPlan d) => DayPlan(

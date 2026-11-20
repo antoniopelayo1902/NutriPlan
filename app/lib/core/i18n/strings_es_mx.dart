@@ -454,4 +454,34 @@ abstract final class S {
   static String increase(String group) => 'Subir $group';
   static String portionMinimum(String n) => 'Mínimo $n por las comidas';
   static String decrease(String group) => 'Bajar $group';
+
+  // Sin nutriólogo vinculado
+  static const String yourNutritionist = 'tu nutriólogo';
+  static const String noNutritionistShort = 'Sin vincular';
+  static const String noNutritionistCallout =
+      'Aún no tienes nutriólogo. Escanea su código QR desde tu perfil para '
+      'vincularte.';
+  static String activityGoalSuggested(int sessions, int minutes) =>
+      'Meta sugerida: $sessions sesiones · $minutes min';
+  static const String toastSwapNoAlone =
+      'Esa opción rebasa tus porciones del día.';
+
+  // Registro: datos del paciente
+  static const String setupEyebrow = 'Bienvenida a NutriPlan';
+  static const String setupTitle = 'Cuéntanos de ti';
+  static const String setupBody =
+      'Con estos datos tu nutriólogo puede preparar tu plan.';
+  static const String birthDateLabel = 'Fecha de nacimiento';
+  static const String birthDatePick = 'Elegir fecha';
+  static const String birthDateRequired = 'Elige tu fecha de nacimiento.';
+  static const String sexLabel = 'Sexo';
+  static const String sexFemale = 'Mujer';
+  static const String sexMale = 'Hombre';
+  static const String objectiveLabel = 'Objetivo';
+  static const List<String> objectives = <String>[
+    'Bajar grasa corporal',
+    'Mantener mi peso',
+    'Subir masa muscular',
+  ];
+  static const String setupSave = 'Continuar';
 }

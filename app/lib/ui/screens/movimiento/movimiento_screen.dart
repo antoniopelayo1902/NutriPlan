@@ -123,11 +123,17 @@ class MovimientoScreen extends StatelessWidget {
                     ),
                     _sessions(context, t, summary, goal),
                     Callout(
-                      S.activityGoalFooter(
-                        controllers.profile.nutritionist?.name ?? '',
-                        goal.sessions,
-                        goal.minutes,
-                      ),
+                      // Sin nutriólogo la meta es la sugerida por la app.
+                      controllers.profile.hasNutritionist
+                          ? S.activityGoalFooter(
+                              controllers.profile.nutritionistName,
+                              goal.sessions,
+                              goal.minutes,
+                            )
+                          : S.activityGoalSuggested(
+                              goal.sessions,
+                              goal.minutes,
+                            ),
                       tone: CalloutTone.neutralDashed,
                     ),
                   ],

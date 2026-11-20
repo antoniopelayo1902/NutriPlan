@@ -136,7 +136,7 @@ abstract final class FirestoreMappers {
   ) => Plan(
     id: m['id'] as String,
     patientId: patientId,
-    nutritionistId: m['nutritionistId'] as String,
+    nutritionistId: (m['nutritionistId'] as String?) ?? '',
     publishedAt: _date(m['publishedAt']),
     weeks: m['weeks'] as int,
     dailyTargets: portionsFromMap(m['dailyTargets']),
@@ -219,8 +219,12 @@ abstract final class FirestoreMappers {
     birthDate: _date(m['birthDate']),
     sex: m['sex'] as String,
     objective: m['objective'] as String,
-    nutritionistId: m['nutritionistId'] as String,
+    nutritionistId: _idOrNull(m['nutritionistId']),
+    profileComplete: m['profileComplete'] != false,
   );
+
+  static String? _idOrNull(Object? v) =>
+      (v is String && v.isNotEmpty) ? v : null;
 
   static Nutritionist nutritionistFromMap(String id, Map<String, dynamic> m) =>
       Nutritionist(id: id, name: m['name'] as String);
