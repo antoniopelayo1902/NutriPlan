@@ -1,11 +1,11 @@
-import '../../core/clock.dart';
-import '../../domain/models/activity.dart';
-import '../../domain/models/equivalent_option.dart';
-import '../../domain/models/food_group.dart';
-import '../../domain/models/measurement.dart';
-import '../../domain/models/patient.dart';
-import '../../domain/models/plan.dart';
-import '../../domain/models/portions.dart';
+import 'package:nutriplan/core/clock.dart';
+import 'package:nutriplan/domain/models/activity.dart';
+import 'package:nutriplan/domain/models/equivalent_option.dart';
+import 'package:nutriplan/domain/models/food_group.dart';
+import 'package:nutriplan/domain/models/measurement.dart';
+import 'package:nutriplan/domain/models/patient.dart';
+import 'package:nutriplan/domain/models/plan.dart';
+import 'package:nutriplan/domain/models/portions.dart';
 
 /// Clearly fictional seed data for the local mock. Dates are relative to the
 /// injected clock's current Mon-Sun week.

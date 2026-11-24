@@ -55,6 +55,7 @@ abstract final class S {
   static const String errorBody = 'Revisa tu conexión e intenta de nuevo.';
   static const String noPlanTitle = 'Tu nutriólogo aún no publica tu plan';
   static const String noPlanBody = 'Cuando lo publique, lo verás aquí.';
+  static const String noPlanNoNutritionistTitle = 'Aún no tienes plan';
   static const String toastRegionLabel = 'Aviso';
   static const String patientInitialsFallback = 'LM';
   static const String avatarLabel = 'Perfil de la paciente';
@@ -420,6 +421,7 @@ abstract final class S {
   static const String tabMeasures = 'Medidas';
   static const String tabHistory = 'Historial';
   static const String tabPortions = 'Porciones';
+  static const String tabPlan = 'Plan';
   static const String addMeasurement = 'Agregar medida';
   static const String newMeasurement = 'Nueva medida';
   static const String editMeasurement = 'Editar medida';
@@ -448,9 +450,23 @@ abstract final class S {
       'Porciones diarias por grupo. No pueden bajar de lo que piden las '
       'comidas del plan. Al publicar, tu paciente ve el cambio al refrescar.';
   static String portionsKcal(String kcal) => '$kcal kcal al día';
-  static const String publishPlan = 'Publicar plan';
-  static const String planPublished = 'Plan publicado';
-  static const String noPatientPlan = 'Este paciente todavía no tiene plan.';
+  static const String publishPlan = 'Publicar porciones';
+  static const String planPublished = 'Porciones publicadas';
+  static const String noPatientPlan =
+      'Este paciente todavía no tiene plan. Ármalo en la pestaña Plan.';
+  static const String planEditorBody =
+      'Elige un platillo del catálogo para cada comida. El plan se repite cada semana.';
+  static const String copyDayToWeek = 'Usar este día en toda la semana';
+  static const String publishMenu = 'Publicar plan de comidas';
+  static const String menuPublished = 'Plan de comidas publicado';
+  static const String menuComplete = 'Semana completa, lista para publicar.';
+  static String menuMissing(int n) =>
+      n == 1 ? 'Falta 1 comida por elegir.' : 'Faltan $n comidas por elegir.';
+  static const String pickDish = 'Sin elegir';
+  static const String catalogEmptyTitle = 'El catálogo de platillos está vacío';
+  static const String catalogEmptyBody =
+      'Carga el catálogo en Firestore para poder armar planes.';
+  static const String planEditorError = 'No se pudo cargar el plan.';
   static String increase(String group) => 'Subir $group';
   static String portionMinimum(String n) => 'Mínimo $n por las comidas';
   static String decrease(String group) => 'Bajar $group';

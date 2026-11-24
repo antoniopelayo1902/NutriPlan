@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../core/clock.dart';
+import '../domain/errors.dart';
 import '../domain/models/activity.dart';
 import '../domain/repositories/activity_repository.dart';
 import '../domain/services/activity_summary.dart';
@@ -42,6 +43,9 @@ class ActivityController extends ChangeNotifier {
     try {
       _goal = await _repository.loadGoal();
       _logs = await _repository.loadLogs();
+    } on NotFoundError {
+      // Sin plan publicado todavía: la pantalla muestra el aviso, no un error.
+      _goal = null;
     } catch (e) {
       _error = e;
     } finally {

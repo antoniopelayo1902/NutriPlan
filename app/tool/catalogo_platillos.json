@@ -1,0 +1,354 @@
+[
+  {
+    "id": "opt-desayuno-1",
+    "slot": "desayuno",
+    "dish": "Avena con fruta y nueces",
+    "portions": {
+      "cereal": 2.0,
+      "fruta": 1.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-2",
+    "slot": "desayuno",
+    "dish": "Chilaquiles verdes con huevo",
+    "portions": {
+      "cereal": 3.0,
+      "aoa": 1.0,
+      "grasa": 1.0,
+      "verdura": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-3",
+    "slot": "desayuno",
+    "dish": "Molletes con queso",
+    "portions": {
+      "cereal": 3.0,
+      "aoa": 2.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-4",
+    "slot": "desayuno",
+    "dish": "Pan dulce con café con leche",
+    "portions": {
+      "cereal": 4.0,
+      "azucar": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-5",
+    "slot": "desayuno",
+    "dish": "Hot cakes con miel y plátano",
+    "portions": {
+      "cereal": 3.0,
+      "fruta": 1.0,
+      "azucar": 2.0
+    }
+  },
+  {
+    "id": "opt-desayuno-6",
+    "slot": "desayuno",
+    "dish": "Huevo a la mexicana con tortillas y papaya",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 2.0,
+      "aoa": 1.0,
+      "fruta": 1.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-7",
+    "slot": "desayuno",
+    "dish": "Omelette de espinaca con pan integral y melón",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 2.0,
+      "aoa": 1.0,
+      "fruta": 1.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-desayuno-8",
+    "slot": "desayuno",
+    "dish": "Yogurt natural con avena, fresas y nueces",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 2.0,
+      "aoa": 1.0,
+      "fruta": 1.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-1",
+    "slot": "colacion",
+    "dish": "Papaya con granola",
+    "portions": {
+      "fruta": 1.0,
+      "cereal": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-2",
+    "slot": "colacion",
+    "dish": "Naranja con nueces",
+    "portions": {
+      "fruta": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-3",
+    "slot": "colacion",
+    "dish": "Pepino con limón y tostadas",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-4",
+    "slot": "colacion",
+    "dish": "Yogurt natural con fresas",
+    "portions": {
+      "leche": 1.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-5",
+    "slot": "colacion",
+    "dish": "Galletas con chocolate",
+    "portions": {
+      "cereal": 2.0,
+      "azucar": 2.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-6",
+    "slot": "colacion",
+    "dish": "Manzana con crema de cacahuate",
+    "portions": {
+      "fruta": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-7",
+    "slot": "colacion",
+    "dish": "Pera con almendras",
+    "portions": {
+      "fruta": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-colacion-8",
+    "slot": "colacion",
+    "dish": "Mandarinas con nueces",
+    "portions": {
+      "fruta": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-comida-1",
+    "slot": "comida",
+    "dish": "Caldo de pollo con verduras y arroz",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 3.0,
+      "leguminosa": 1.0,
+      "grasa": 2.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-comida-2",
+    "slot": "comida",
+    "dish": "Sopa de lentejas con tostadas",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 2.0,
+      "leguminosa": 1.0,
+      "aoa": 2.0,
+      "grasa": 1.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-comida-3",
+    "slot": "comida",
+    "dish": "Hamburguesa de res con papas al horno",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 3.0,
+      "aoa": 3.5,
+      "grasa": 2.0
+    }
+  },
+  {
+    "id": "opt-comida-4",
+    "slot": "comida",
+    "dish": "Pizza de pepperoni (3 rebanadas)",
+    "portions": {
+      "cereal": 4.0,
+      "aoa": 3.0,
+      "grasa": 5.0
+    }
+  },
+  {
+    "id": "opt-comida-5",
+    "slot": "comida",
+    "dish": "Pasta Alfredo con pollo",
+    "portions": {
+      "cereal": 5.0,
+      "aoa": 2.0,
+      "leche": 2.0,
+      "grasa": 4.0
+    }
+  },
+  {
+    "id": "opt-comida-6",
+    "slot": "comida",
+    "dish": "Pechuga a la plancha con arroz, frijoles y ensalada",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 3.0,
+      "aoa": 3.0,
+      "leguminosa": 1.0,
+      "grasa": 2.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-comida-7",
+    "slot": "comida",
+    "dish": "Tinga de pollo con arroz rojo y frijoles",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 3.0,
+      "aoa": 3.0,
+      "leguminosa": 1.0,
+      "grasa": 2.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-comida-8",
+    "slot": "comida",
+    "dish": "Pescado al ajillo con arroz y ensalada de nopales",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 3.0,
+      "aoa": 3.0,
+      "leguminosa": 1.0,
+      "grasa": 2.0,
+      "fruta": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-1",
+    "slot": "cena",
+    "dish": "Sincronizadas de jamón y queso con ensalada",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 2.0,
+      "leche": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-2",
+    "slot": "cena",
+    "dish": "Crema de calabacita con tostadas",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 1.0,
+      "leche": 1.0,
+      "grasa": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-3",
+    "slot": "cena",
+    "dish": "Tostadas de tinga",
+    "portions": {
+      "verdura": 1.0,
+      "cereal": 3.0,
+      "aoa": 2.0,
+      "grasa": 2.0
+    }
+  },
+  {
+    "id": "opt-cena-4",
+    "slot": "cena",
+    "dish": "Sopa instantánea con pan",
+    "portions": {
+      "cereal": 4.0,
+      "aoa": 1.0,
+      "verdura": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-5",
+    "slot": "cena",
+    "dish": "Pizza de cuatro quesos",
+    "portions": {
+      "cereal": 4.0,
+      "aoa": 3.0,
+      "grasa": 3.0
+    }
+  },
+  {
+    "id": "opt-cena-6",
+    "slot": "cena",
+    "dish": "Quesadillas de champiñón con ensalada",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 2.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-7",
+    "slot": "cena",
+    "dish": "Sándwich de pavo con jitomate y lechuga",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 2.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  },
+  {
+    "id": "opt-cena-8",
+    "slot": "cena",
+    "dish": "Tostadas de frijol con queso panela",
+    "portions": {
+      "verdura": 2.0,
+      "cereal": 2.0,
+      "aoa": 2.0,
+      "grasa": 1.0,
+      "leche": 1.0
+    }
+  }
+]

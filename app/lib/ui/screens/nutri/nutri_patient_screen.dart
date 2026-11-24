@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../application/nutri_controller.dart';
+import '../../../application/nutri_plan_controller.dart';
 import '../../../application/progress_controller.dart';
 import '../../../application/toast_controller.dart';
 import '../../../core/format/es_mx_format.dart';
 import '../../../core/i18n/strings_es_mx.dart';
 import '../../../data/firestore/firestore_measurement_repository.dart';
 import '../../../data/nutritionist_service.dart';
+import '../../../data/plan_menu_service.dart';
 import '../../../domain/models/food_group.dart';
 import '../../../domain/models/measurement.dart';
 import '../../../domain/models/patient_summary.dart';
@@ -27,12 +29,13 @@ import 'measurement_form_screen.dart';
 import 'nutri_measurements_panel.dart';
 import 'nutri_panel_loading.dart';
 import 'nutri_patient_header.dart';
+import 'nutri_plan_panel.dart';
 import 'nutri_portions_panel.dart';
 
-enum _Tab { measures, history, portions }
+enum _Tab { measures, history, plan, portions }
 
 /// Detalle de un paciente para el nutriólogo: sus medidas (CRUD), su
-/// historial y las porciones de su plan.
+/// historial, el plan de comidas que le arma y las porciones.
 class NutriPatientScreen extends StatefulWidget {
   const NutriPatientScreen({
     super.key,
@@ -55,6 +58,7 @@ class NutriPatientScreen extends StatefulWidget {
 class _NutriPatientScreenState extends State<NutriPatientScreen> {
   late final FirestoreMeasurementRepository _repo;
   late final ProgressController _progress;
+  late final NutriPlanController _plan;
   _Tab _tab = _Tab.measures;
   MeasurementMetric _metric = MeasurementMetric.weight;
 
@@ -71,12 +75,22 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
     _repo = FirestoreMeasurementRepository(uid: _uid);
     // Reusa el controller de Progreso, pero con los datos de este paciente.
     _progress = ProgressController(_repo)..load();
+    _plan = NutriPlanController(
+      loadCatalog: PlanMenuService.loadCatalog,
+      loadMenu: () => PlanMenuService.loadMenu(_uid),
+      publish: (menu) => PlanMenuService.publish(
+        patientUid: _uid,
+        nutriUid: context.read<NutriController>().uid,
+        menu: menu,
+      ),
+    )..load();
     _loadTargets();
   }
 
   @override
   void dispose() {
     _progress.dispose();
+    _plan.dispose();
     super.dispose();
   }
 
@@ -99,7 +113,11 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
 
   /// Swipe down: vuelve a leer medidas y porciones de Firestore.
   Future<void> _refresh() async {
-    await Future.wait(<Future<void>>[_progress.refresh(), _loadTargets()]);
+    await Future.wait(<Future<void>>[
+      _progress.refresh(),
+      _loadTargets(),
+      _plan.load(),
+    ]);
   }
 
   /// Abre el formulario: vacío para crear, con datos para editar.
@@ -161,6 +179,14 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
     }
   }
 
+  /// Publica el menú; las porciones se vuelven a leer porque pueden subir.
+  Future<void> _publishMenu() async {
+    final ToastController toast = context.read<ToastController>();
+    final bool ok = await _plan.publish();
+    toast.show(ok ? S.menuPublished : S.actionFailed);
+    if (ok) await _loadTargets();
+  }
+
   Future<void> _unlink() async {
     final NutriController nutri = context.read<NutriController>();
     final ToastController toast = context.read<ToastController>();
@@ -193,6 +219,7 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
       options: const <SegmentOption<_Tab>>[
         SegmentOption<_Tab>(_Tab.measures, S.tabMeasures),
         SegmentOption<_Tab>(_Tab.history, S.tabHistory),
+        SegmentOption<_Tab>(_Tab.plan, S.tabPlan),
         SegmentOption<_Tab>(_Tab.portions, S.tabPortions),
       ],
     );
@@ -229,6 +256,12 @@ class _NutriPatientScreenState extends State<NutriPatientScreen> {
                 return _measures();
               case _Tab.history:
                 return _history(t);
+              case _Tab.plan:
+                return NutriPlanPanel(
+                  controller: _plan,
+                  wide: widget.embedded,
+                  onPublish: _publishMenu,
+                );
               case _Tab.portions:
                 return _portions();
             }

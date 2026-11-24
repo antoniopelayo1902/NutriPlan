@@ -62,7 +62,10 @@ class AppChip extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: height),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: t.space.s4),
+                // Repartido a todo lo ancho el espacio ya lo da el reparto.
+                padding: EdgeInsets.symmetric(
+                  horizontal: expand ? t.space.s1 : t.space.s4,
+                ),
                 child: Center(
                   widthFactor: expand ? null : 1,
                   child: AppText(

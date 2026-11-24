@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nutriplan/application/plan_controller.dart';
-import 'package:nutriplan/data/mock/seed.dart';
+
+import 'fakes/seed.dart';
+
 import 'package:nutriplan/domain/models/equivalent_option.dart';
 import 'package:nutriplan/domain/models/plan.dart';
 import 'package:nutriplan/domain/repositories/plan_repository.dart';

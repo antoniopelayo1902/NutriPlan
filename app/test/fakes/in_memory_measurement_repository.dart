@@ -1,7 +1,8 @@
-import '../core/scenario.dart';
-import '../domain/errors.dart';
-import '../domain/models/measurement.dart';
-import '../domain/repositories/measurement_repository.dart';
+import 'scenario.dart';
+
+import 'package:nutriplan/domain/errors.dart';
+import 'package:nutriplan/domain/models/measurement.dart';
+import 'package:nutriplan/domain/repositories/measurement_repository.dart';
 
 class InMemoryMeasurementRepository implements MeasurementRepository {
   InMemoryMeasurementRepository({

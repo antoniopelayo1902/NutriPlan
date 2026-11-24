@@ -36,6 +36,19 @@ class ActivityGoal {
     }
   }
 
+  /// Meta inicial de un plan nuevo: 150 min a la semana, lo que recomienda
+  /// la OMS para adultos. El nutriólogo la puede ajustar después.
+  static ActivityGoal recommended() => ActivityGoal(
+    sessions: 5,
+    minutes: 150,
+    types: <ActivityType>[
+      ActivityType(kind: ActivityKind.caminata, defaultMin: 30, kcalPerMin: 4),
+      ActivityType(kind: ActivityKind.fuerza, defaultMin: 45, kcalPerMin: 5),
+      ActivityType(kind: ActivityKind.bici, defaultMin: 40, kcalPerMin: 7),
+      ActivityType(kind: ActivityKind.yoga, defaultMin: 30, kcalPerMin: 3),
+    ],
+  );
+
   final int sessions;
   final int minutes;
   final List<ActivityType> types;

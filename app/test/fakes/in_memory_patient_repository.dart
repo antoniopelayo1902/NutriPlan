@@ -1,5 +1,5 @@
-import '../domain/models/patient.dart';
-import '../domain/repositories/patient_repository.dart';
+import 'package:nutriplan/domain/models/patient.dart';
+import 'package:nutriplan/domain/repositories/patient_repository.dart';
 
 class InMemoryPatientRepository implements PatientRepository {
   InMemoryPatientRepository({

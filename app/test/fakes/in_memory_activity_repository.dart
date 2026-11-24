@@ -1,8 +1,10 @@
-import '../core/clock.dart';
-import '../core/scenario.dart';
-import '../domain/errors.dart';
-import '../domain/models/activity.dart';
-import '../domain/repositories/activity_repository.dart';
+import 'package:nutriplan/core/clock.dart';
+
+import 'scenario.dart';
+
+import 'package:nutriplan/domain/errors.dart';
+import 'package:nutriplan/domain/models/activity.dart';
+import 'package:nutriplan/domain/repositories/activity_repository.dart';
 
 class InMemoryActivityRepository implements ActivityRepository {
   InMemoryActivityRepository({

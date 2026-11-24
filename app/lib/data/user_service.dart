@@ -5,9 +5,8 @@ import '../core/clock.dart';
 import '../domain/models/user_role.dart';
 import 'device_token_service.dart';
 import 'firestore/firestore_paths.dart';
-import 'firestore/firestore_seeder.dart';
-import 'mock/seed.dart';
 import 'nutritionist_service.dart';
+import 'plan_menu_service.dart';
 
 /// Guarda al usuario en Firestore cuando inicia sesión y borra su cuenta.
 abstract final class UserService {
@@ -18,8 +17,6 @@ abstract final class UserService {
     UserRole newRole = UserRole.patient,
     Clock clock = DateTime.now,
   }) async {
-    final FirestoreSeeder seeder = FirestoreSeeder(clock: clock);
-    await seeder.ensureCatalog();
     final DocumentReference<Map<String, dynamic>> ref = FirestorePaths.user(
       user.uid,
     );
@@ -28,7 +25,7 @@ abstract final class UserService {
       if (newRole == UserRole.nutritionist) {
         await _createNutritionist(user);
       } else {
-        await _createPatient(user, seeder, clock);
+        await _createPatient(user);
       }
       return newRole;
     }
@@ -36,24 +33,22 @@ abstract final class UserService {
       'lastLoginAt': FieldValue.serverTimestamp(),
     });
     final UserRole role = UserRole.parse(doc.data()!['role']);
-    if (role == UserRole.patient) await seeder.ensureWeek(user.uid);
+    if (role == UserRole.patient) {
+      await PlanMenuService.ensureWeek(user.uid, clock: clock);
+    }
     return role;
   }
 
-  /// Paciente nuevo: su documento y el plan de ejemplo.
-  static Future<void> _createPatient(
-    User user,
-    FirestoreSeeder seeder,
-    Clock clock,
-  ) async {
-    final SeedData seed = SeedData.build(clock);
+  /// Paciente nuevo: solo su documento. El plan lo publica su nutriólogo.
+  static Future<void> _createPatient(User user) async {
     await FirestorePaths.user(user.uid).set(<String, dynamic>{
       'role': UserRole.patient.name,
       'email': user.email,
       'name': _defaultName(user),
-      'birthDate': Timestamp.fromDate(seed.patient.birthDate),
-      'sex': seed.patient.sex,
-      'objective': seed.patient.objective,
+      // Valores temporales: la pantalla de registro los pide al entrar.
+      'birthDate': Timestamp.fromDate(DateTime(2000)),
+      'sex': 'F',
+      'objective': '',
       // Sin nutriólogo hasta que escanee su código QR.
       'nutritionistId': null,
       // Pide nombre, fecha de nacimiento, sexo y objetivo al entrar.
@@ -63,7 +58,6 @@ abstract final class UserService {
       'createdAt': FieldValue.serverTimestamp(),
       'lastLoginAt': FieldValue.serverTimestamp(),
     });
-    await seeder.seedUser(user.uid);
   }
 
   /// Nutriólogo nueva: su documento y su nombre en el catálogo.
@@ -141,7 +135,7 @@ abstract final class UserService {
     final String? display = user.displayName;
     if (display != null && display.trim().isNotEmpty) return display.trim();
     final String local = (user.email ?? '').split('@').first;
-    if (local.isEmpty) return SeedData.build(DateTime.now).patient.name;
+    if (local.isEmpty) return 'Paciente';
     return local[0].toUpperCase() + local.substring(1);
   }
 
