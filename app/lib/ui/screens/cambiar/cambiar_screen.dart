@@ -135,7 +135,9 @@ class _CambiarScreenState extends State<CambiarScreen> {
     final List<MapEntry<EquivalentOption, FitResult>> all =
         <MapEntry<EquivalentOption, FitResult>>[
           for (final EquivalentOption o in c.plan.optionsFor(meal.slot))
-            if (c.plan.fitFor(day.date, meal.id, o) != null)
+            // El catálogo también trae el platillo que ya tiene la comida.
+            if (o.dish != meal.dish &&
+                c.plan.fitFor(day.date, meal.id, o) != null)
               MapEntry<EquivalentOption, FitResult>(
                 o,
                 c.plan.fitFor(day.date, meal.id, o)!,

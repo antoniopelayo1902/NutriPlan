@@ -32,9 +32,12 @@ galería, nombre, tu nutrióloga, cerrar sesión, eliminar cuenta y el código Q
 **Nutrióloga:**
 
 - Lista de pacientes vinculados.
-- Por paciente: medidas (crear, editar y eliminar), historial con gráficas y
-  porciones diarias por grupo, con las calorías recalculadas y botón para
-  publicar el plan.
+- Por paciente: medidas (crear, editar y eliminar), historial con gráficas,
+  el plan de comidas y las porciones diarias por grupo, con las calorías
+  recalculadas.
+- Arma el plan de comidas: elige un platillo del catálogo para cada comida de
+  la semana (o copia un día a toda la semana) y lo publica. El paciente lo ve
+  al refrescar y el plan se repite cada semana.
 - Su código QR para que los pacientes se vinculen con ella.
 
 En todas las listas se puede jalar hacia abajo para recargar desde Firebase.
@@ -74,15 +77,22 @@ En todas las listas se puede jalar hacia abajo para recargar desde Firebase.
 
 ```
 users/{uid}                 perfil, rol (patient o nutritionist), token
-users/{uid}/plan/current    porciones diarias y meta de actividad
+users/{uid}/plan/current    menú de la semana, porciones diarias y meta de actividad
 users/{uid}/days/{fecha}    comidas de cada día
 users/{uid}/activityLogs    sesiones de actividad
 users/{uid}/measurements    medidas de cada consulta
 nutritionists/{id}          nombre de cada nutrióloga
-options                     platillos equivalentes por tiempo de comida
+options                     catálogo de platillos por tiempo de comida
 ```
 
-Una cuenta de paciente nueva recibe un plan de ejemplo para empezar.
+Una cuenta de paciente nueva empieza sin plan. Su nutrióloga se lo arma con
+platillos del catálogo, que vive en Firestore. Para cargar el catálogo la
+primera vez (o agregar platillos) se edita `app/tool/catalogo_platillos.json`
+y se corre:
+
+```bash
+python3 app/tool/cargar_catalogo.py correo@ejemplo.com contraseña
+```
 
 ## Estructura
 
@@ -94,13 +104,16 @@ app/lib/
   domain/       modelos y reglas del plan
   theme/        colores, tipografía y medidas
   ui/           pantallas y componentes
+app/test/
+  fakes/        datos de ejemplo y repositorios en memoria, solo para pruebas
 ```
 
 ## Cómo correrla
 
 1. En la consola de Firebase del proyecto, crea **Firestore Database** en
    modo de prueba.
-2. Corre la app:
+2. Carga el catálogo de platillos (ver arriba).
+3. Corre la app:
 
 ```bash
 cd app
@@ -115,6 +128,9 @@ Probada en el simulador de iOS (iPhone 17 Pro).
 Entrega 2: la información viene de Firebase, el login guarda al usuario y su
 token, hay CRUD de sesiones y de medidas, foto de perfil, recarga de listas
 jalando hacia abajo, cuentas de paciente y nutrióloga, y el Factor WOW con QR.
+
+Entrega 3: el nutriólogo arma el plan de comidas desde la app o la web con el
+catálogo de Firestore, y los datos de ejemplo quedaron solo en las pruebas.
 
 ## Documentación de diseño
 

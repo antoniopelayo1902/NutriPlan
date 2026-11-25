@@ -1,13 +1,15 @@
-import '../core/clock.dart';
-import '../core/scenario.dart';
-import '../domain/models/food_group.dart';
-import '../domain/models/portions.dart';
-import '../domain/errors.dart';
-import '../domain/models/equivalent_option.dart';
-import '../domain/models/fit.dart';
-import '../domain/models/plan.dart';
-import '../domain/repositories/plan_repository.dart';
-import '../domain/services/fit.dart';
+import 'package:nutriplan/core/clock.dart';
+
+import 'scenario.dart';
+
+import 'package:nutriplan/domain/models/food_group.dart';
+import 'package:nutriplan/domain/models/portions.dart';
+import 'package:nutriplan/domain/errors.dart';
+import 'package:nutriplan/domain/models/equivalent_option.dart';
+import 'package:nutriplan/domain/models/fit.dart';
+import 'package:nutriplan/domain/models/plan.dart';
+import 'package:nutriplan/domain/repositories/plan_repository.dart';
+import 'package:nutriplan/domain/services/fit.dart';
 
 class InMemoryPlanRepository implements PlanRepository {
   InMemoryPlanRepository({

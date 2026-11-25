@@ -8,6 +8,7 @@ import '../../domain/models/measurement.dart';
 import '../../domain/models/patient.dart';
 import '../../domain/models/plan.dart';
 import '../../domain/models/portions.dart';
+import '../../domain/models/week_menu.dart';
 
 /// Convierte los modelos a mapas de Firestore y de regreso.
 abstract final class FirestoreMappers {
@@ -160,6 +161,33 @@ abstract final class FirestoreMappers {
         dish: m['dish'] as String,
         portions: portionsFromMap(m['portions']),
       );
+
+  // Menú de la semana: 7 días, cada uno con un platillo por tiempo de comida
+  static List<Map<String, dynamic>> menuToMap(WeekMenu menu) =>
+      <Map<String, dynamic>>[
+        for (int d = 0; d < WeekMenu.days; d++)
+          <String, dynamic>{
+            for (final MealSlot s in MealSlot.values)
+              if (menu.pick(d, s) != null)
+                s.name: <String, dynamic>{
+                  'id': menu.pick(d, s)!.id,
+                  ...optionToMap(menu.pick(d, s)!),
+                },
+          },
+      ];
+
+  static WeekMenu? menuFromMap(Object? raw) {
+    if (raw is! List<dynamic>) return null;
+    WeekMenu menu = WeekMenu();
+    for (int d = 0; d < raw.length && d < WeekMenu.days; d++) {
+      final Map<String, dynamic> day = raw[d] as Map<String, dynamic>;
+      for (final MapEntry<String, dynamic> e in day.entries) {
+        final Map<String, dynamic> m = e.value as Map<String, dynamic>;
+        menu = menu.withPick(d, optionFromMap(m['id'] as String, m));
+      }
+    }
+    return menu;
+  }
 
   // Medidas
   static Map<String, dynamic> measurementToMap(Measurement m) =>

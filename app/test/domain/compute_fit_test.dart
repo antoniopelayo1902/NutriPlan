@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nutriplan/data/mock/seed.dart';
+
+import '../fakes/seed.dart';
+
 import 'package:nutriplan/domain/errors.dart';
 import 'package:nutriplan/domain/models/equivalent_option.dart';
 import 'package:nutriplan/domain/models/fit.dart';

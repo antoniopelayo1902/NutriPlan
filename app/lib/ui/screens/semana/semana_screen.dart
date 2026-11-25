@@ -58,6 +58,13 @@ class SemanaScreen extends StatelessWidget {
               loading: controllers.plan.loading,
               hasError: controllers.plan.hasError && plan == null,
               empty: plan == null,
+              // Sin nutriólogo no hay quien publique el plan: dice cómo vincularse.
+              emptyTitle: controllers.profile.hasNutritionist
+                  ? S.noPlanTitle
+                  : S.noPlanNoNutritionistTitle,
+              emptyBody: controllers.profile.hasNutritionist
+                  ? S.noPlanBody
+                  : S.noNutritionistCallout,
               onRetry: controllers.plan.retry,
               builder: (BuildContext context) {
                 final Plan p = plan!;

@@ -6,9 +6,10 @@ import '../domain/models/patient_summary.dart';
 import '../domain/models/plan.dart';
 import '../domain/models/portions.dart';
 import '../domain/models/user_role.dart';
+import '../domain/models/week_menu.dart';
 import 'firestore/firestore_mappers.dart';
 import 'firestore/firestore_paths.dart';
-import 'mock/seed.dart';
+import 'plan_menu_service.dart';
 
 /// Lecturas y escrituras de Firestore que hace la cuenta de nutriólogo.
 abstract final class NutritionistService {
@@ -40,7 +41,7 @@ abstract final class NutritionistService {
   }
 
   /// Registro manual: un paciente sin cuenta propia que el nutriólogo
-  /// captura desde la web. Lleva el plan de ejemplo vacío de días y medidas.
+  /// captura desde la web. Empieza sin plan; el nutriólogo se lo arma.
   /// Regresa el uid del documento nuevo.
   static Future<String> createPatient({
     required String nutriUid,
@@ -53,9 +54,7 @@ abstract final class NutritionistService {
     }
     final DocumentReference<Map<String, dynamic>> ref =
         FirestorePaths.usersCollection().doc();
-    final SeedData seed = SeedData.build(DateTime.now);
-    final WriteBatch batch = FirestorePaths.db.batch();
-    batch.set(ref, <String, dynamic>{
+    await ref.set(<String, dynamic>{
       'role': UserRole.patient.name,
       'manual': true,
       'name': name.trim(),
@@ -64,11 +63,6 @@ abstract final class NutritionistService {
       'nutritionistId': nutriUid,
       'createdAt': FieldValue.serverTimestamp(),
     });
-    batch.set(
-      FirestorePaths.plan(ref.id),
-      FirestoreMappers.planToMap(seed.plan),
-    );
-    await batch.commit();
     return ref.id;
   }
 
@@ -118,6 +112,8 @@ abstract final class NutritionistService {
   /// Mínimo por grupo: lo que piden las comidas del día más cargado, para
   /// que las porciones diarias nunca queden por debajo del plan.
   static Future<Portions> loadMinimums(String patientUid) async {
+    final WeekMenu? menu = await PlanMenuService.loadMenu(patientUid);
+    if (menu != null) return menu.minimumTargets;
     final QuerySnapshot<Map<String, dynamic>> days = await FirestorePaths.days(
       patientUid,
     ).get();

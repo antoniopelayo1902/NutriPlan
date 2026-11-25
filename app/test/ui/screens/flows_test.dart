@@ -7,10 +7,14 @@ import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nutriplan/app.dart';
-import 'package:nutriplan/bootstrap.dart';
+
+import '../../fakes/mock_controllers.dart';
+
 import 'package:nutriplan/core/flags.dart';
-import 'package:nutriplan/core/scenario.dart';
-import 'package:nutriplan/data/mock/seed.dart';
+
+import '../../fakes/scenario.dart';
+import '../../fakes/seed.dart';
+
 import 'package:nutriplan/domain/models/food_group.dart';
 import 'package:nutriplan/domain/models/plan.dart';
 import 'package:nutriplan/theme/accent_controller.dart';

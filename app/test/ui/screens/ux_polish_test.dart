@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nutriplan/app.dart';
 import 'package:nutriplan/application/app_controllers.dart';
-import 'package:nutriplan/bootstrap.dart';
+
+import '../../fakes/mock_controllers.dart';
+
 import 'package:nutriplan/theme/accent_controller.dart';
 import 'package:nutriplan/domain/models/plan.dart';
 import 'package:nutriplan/ui/components/domain/app_tab_bar.dart';

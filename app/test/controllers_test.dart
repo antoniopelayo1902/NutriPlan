@@ -1,11 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nutriplan/application/app_controllers.dart';
 import 'package:nutriplan/application/toast_controller.dart';
-import 'package:nutriplan/bootstrap.dart';
-import 'package:nutriplan/core/scenario.dart';
-import 'package:nutriplan/data/in_memory_activity_repository.dart';
-import 'package:nutriplan/data/in_memory_plan_repository.dart';
-import 'package:nutriplan/data/mock/seed.dart';
+
+import 'fakes/mock_controllers.dart';
+import 'fakes/scenario.dart';
+import 'fakes/in_memory_activity_repository.dart';
+import 'fakes/in_memory_plan_repository.dart';
+import 'fakes/seed.dart';
+
 import 'package:nutriplan/domain/errors.dart';
 import 'package:nutriplan/domain/models/equivalent_option.dart';
 import 'package:nutriplan/domain/models/fit.dart';
